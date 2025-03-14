@@ -41,7 +41,7 @@ const Navbar = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: scrollingDown ? -100 : 0, opacity: 1 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="fixed top-8 left-1/2 transform -translate-x-1/2 w-[90%] md:w-[80%] bg-gradient-to-t from-purple-950 to-[#121212] border border-[#33353F] rounded-xl shadow-lg backdrop-blur-md bg-opacity-90 z-30" // top-10 added for more space at the top
+      className="fixed top-6 sm:top-2.5 left-1/2 transform -translate-x-1/2 w-[90%] md:w-[80%] bg-gradient-to-t from-purple-950 to-[#121212] border border-[#33353F] rounded-xl shadow-lg backdrop-blur-md bg-opacity-90 z-30" // top-10 added for more space at the top
     >
       <div className="flex container lg:py-4 flex-wrap items-center justify-between mx-auto px-6 py-3">
         <Link href="/" className="text-xl md:text-2xl text-white font-extrabold">

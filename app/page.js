@@ -17,23 +17,30 @@ export default function Home() {
       <main className="flex min-h-screen flex-col">
         <Navbar />
         <div className="container mt-12 mx-auto px-12 py-14">
-        <HeroSection />
-        <Achievements />
+        <div id="home">
+          <HeroSection />
+        </div>
+        <div id="achievements">
+          <Achievements />
+        </div>
         <br/>
-        <AboutSection />
+        <div id="about">
+          <AboutSection />
+        </div>
         <br/>
-        <ProjectSection />
+        <div id="projects">
+          <ProjectSection />
+        </div>
         <br/>
-        <div className="container mt-24 mx-auto px-12 py-4">
-        <ContactInfoCard 
-        github="https://github.com/gkontevas"
-        linkedin="https://www.linkedin.com/in/dimos-gkontevas-bb87a22b3/"
-        phone="6945004617"
-        email="dimosgkontevas1
-        @gmail.com"
-        instagram="gkontevas_"
-      />
-      </div>
+        <div id="contact" className="container mt-24 mx-auto px-12 py-4">
+          <ContactInfoCard 
+            github="https://github.com/gkontevas"
+            linkedin="https://www.linkedin.com/in/dimos-gkontevas-bb87a22b3/"
+            phone="6945004617"
+            email="dimosgkontevas1@gmail.com"
+            instagram="gkontevas_"
+          />
+        </div>
         {/* <EmailSection /> */}
         </div>
         <Footer />
@@ -41,3 +48,4 @@ export default function Home() {
   
   );
 }
+

@@ -101,13 +101,13 @@ const ContactForm = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8 bg-[#0A0A0A]">
-      <div className="w-full max-w-7xl mx-auto">
-        <div className="flex flex-col-reverse md:flex-row gap-8 sm:gap-12 md:gap-16 lg:gap-24">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] py-6">
+      <div className="w-full max-w-6xl px-3 sm:px-6">
+        <div className="flex flex-col gap-6">
           {/* Left Section - Contact Form */}
           <motion.div
             ref={formContainerRef}
-            className="w-full md:w-1/2 p-6 sm:p-8 md:p-10 bg-[#121212] rounded-3xl border border-[#9D4EDD]/30 shadow-xl shadow-[#9D4EDD]/10 relative overflow-hidden"
+            className="w-full bg-[#121212] rounded-2xl border border-[#9D4EDD]/30 shadow-lg shadow-[#9D4EDD]/10 relative overflow-hidden"
             initial="hidden"
             animate={isFormInView ? "visible" : "hidden"}
             variants={containerVariants}
@@ -116,15 +116,15 @@ const ContactForm = () => {
             <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-purple-900/20"></div>
             <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-purple-900/20"></div>
 
-            <div className="space-y-6 sm:space-y-8 relative z-10">
+            <div className="p-5 space-y-5 relative z-10">
               <motion.h2
-                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#9D4EDD] mb-4 sm:mb-6 text-center"
+                className="text-2xl sm:text-3xl font-bold text-[#9D4EDD] mb-4 text-center"
                 variants={itemVariants}
               >
                 Contact Me
               </motion.h2>
-              <form onSubmit={onSubmit} className="space-y-6 sm:space-y-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <form onSubmit={onSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <motion.div variants={formItemVariants}>
                     <input
                       type="text"
@@ -144,7 +144,7 @@ const ContactForm = () => {
                     />
                   </motion.div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <motion.div variants={formItemVariants}>
                     <input
                       type="email"
@@ -168,7 +168,7 @@ const ContactForm = () => {
                   <textarea
                     name="message"
                     placeholder="Message"
-                    rows={6}
+                    rows={5}
                     className="w-full px-4 py-3 bg-[#1A1A1A] border border-[#333333] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9D4EDD] focus:border-transparent text-slate-300 placeholder-gray-500 transition-all duration-200 resize-none"
                     required
                   ></textarea>
@@ -206,7 +206,7 @@ const ContactForm = () => {
           {/* Right Section - Contact Info */}
           <motion.div
             ref={infoContainerRef}
-            className="w-full md:w-1/2 p-6 sm:p-8 md:p-10 bg-[#121212] rounded-3xl border border-[#9D4EDD]/30 shadow-xl shadow-[#9D4EDD]/10 relative overflow-hidden"
+            className="w-full bg-[#121212] rounded-2xl border border-[#9D4EDD]/30 shadow-lg shadow-[#9D4EDD]/10 relative overflow-hidden"
             initial="hidden"
             animate={isInfoInView ? "visible" : "hidden"}
             variants={containerVariants}
@@ -215,21 +215,21 @@ const ContactForm = () => {
             <div className="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-purple-900/20"></div>
             <div className="absolute -bottom-20 -right-20 w-40 h-40 rounded-full bg-purple-900/20"></div>
 
-            <div className="space-y-8 sm:space-y-12 relative z-10">
-              <div className="space-y-6">
+            <div className="p-5 space-y-6 relative z-10">
+              <div className="space-y-5">
                 <motion.h2
-                  className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#9D4EDD] mb-6 sm:mb-8 text-center md:text-left"
+                  className="text-2xl sm:text-3xl font-bold text-[#9D4EDD] mb-4 text-center sm:text-left"
                   variants={itemVariants}
                 >
                   Contact Information
                 </motion.h2>
-                <div className="space-y-8 text-slate-300">
+                <div className="space-y-5 text-slate-300">
                   <motion.div
                     className="flex items-center gap-4 p-3 rounded-xl hover:bg-[#1A1A1A] transition-all duration-300"
                     variants={itemVariants}
                     whileHover={{ x: 5 }}
                   >
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-900/30">
+                    <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-purple-900/30">
                       <MapPin className="h-5 w-5 text-[#9D4EDD]" />
                     </div>
                     <span>Ancient Corinth, Greece</span>
@@ -239,7 +239,7 @@ const ContactForm = () => {
                     variants={itemVariants}
                     whileHover={{ x: 5 }}
                   >
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-900/30">
+                    <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-purple-900/30">
                       <Phone className="h-5 w-5 text-[#9D4EDD]" />
                     </div>
                     <span>+30 6945004617</span>
@@ -249,7 +249,7 @@ const ContactForm = () => {
                     variants={itemVariants}
                     whileHover={{ x: 5 }}
                   >
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-900/30">
+                    <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-purple-900/30">
                       <Mail className="h-5 w-5 text-[#9D4EDD]" />
                     </div>
                     <span className="break-all">dimosgkontevas1@gmail.com</span>
@@ -258,10 +258,10 @@ const ContactForm = () => {
               </div>
 
               <motion.div className="space-y-4" variants={containerVariants}>
-                <motion.p className="text-slate-400 font-medium text-center md:text-left" variants={itemVariants}>
+                <motion.p className="text-slate-400 font-medium text-center sm:text-left" variants={itemVariants}>
                   Connect with me
                 </motion.p>
-                <div className="flex justify-center md:justify-start gap-6">
+                <div className="flex justify-center sm:justify-start gap-6">
                   <motion.div variants={itemVariants} whileHover="hover" initial="initial">
                     <Link
                       href="https://www.instagram.com/gkontevas_/"
@@ -305,6 +305,8 @@ const ContactForm = () => {
 }
 
 export default ContactForm
+
+
 
 
 

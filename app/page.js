@@ -32,7 +32,7 @@ export default function Home() {
           <ProjectSection />
         </div>
         <br/>
-        <div id="contact" className="container mt-24 mx-auto px-4 sm:px-6 lg:px-12 py-4">
+        <div id="contact" className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <ContactForm 
             github="https://github.com/gkontevas"
             linkedin="https://www.linkedin.com/in/dimos-gkontevas-bb87a22b3/"

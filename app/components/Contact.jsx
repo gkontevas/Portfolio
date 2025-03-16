@@ -101,7 +101,7 @@ const ContactForm = () => {
   }
 
   return (
-    <div className="min-h-screen w-full mx-auto flex items-center justify-center bg-[#0A0A0A] py-4 px-0 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full mx-auto flex items-center justify-start bg-[#0A0A0A] py-4 px-0 sm:px-6 lg:px-8">
       <div className="w-full max-w-full xl:max-w-[1400px] 2xl:max-w-[1600px]">
       <div className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8 w-full">
           {/* Contact Form */}

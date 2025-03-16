@@ -5,7 +5,7 @@ import AboutSection from "./components/AboutSection";
 import ProjectSection from "./components/ProjectSection";
 // import EmailSection from "./components/EmailSection";
 import Footer from "./components/Footer";
-import ContactInfoCard from "./components/ContactInfoCard";
+import ContactForm from "./components/Contact";
 import Achievements from "./components/Achievements";
 import "./globals.css";
 
@@ -33,7 +33,7 @@ export default function Home() {
         </div>
         <br/>
         <div id="contact" className="container mt-24 mx-auto px-12 py-4">
-          <ContactInfoCard 
+          <ContactForm 
             github="https://github.com/gkontevas"
             linkedin="https://www.linkedin.com/in/dimos-gkontevas-bb87a22b3/"
             phone="6945004617"

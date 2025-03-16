@@ -4,7 +4,7 @@ import { useState, useRef } from "react"
 import Swal from "sweetalert2"
 import Link from "next/link"
 import { motion, useInView } from "framer-motion"
-import { MapPin, Phone, Mail, Instagram, Github, Linkedin, Send } from "lucide-react"
+import { MapPin, Phone, Mail, Instagram, Github, Linkedin, Send } from 'lucide-react'
 
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -101,30 +101,30 @@ const ContactForm = () => {
   }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A]">
-      <div className="w-full">
-        <div className="flex flex-col md:flex-row">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#0A0A0A] py-4 px-0 sm:px-6 lg:px-8">
+      <div className="w-full max-w-full xl:max-w-[1400px] 2xl:max-w-[1600px]">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8 w-full">
           {/* Contact Form */}
           <motion.div
             ref={formContainerRef}
-            className="w-full md:w-1/2 bg-[#121212] border-0 md:border-r border-[#333333]"
+            className="w-full min-w-[300px] md:w-1/2 bg-[#121212] rounded-none sm:rounded-2xl border-x-0 sm:border border-[#9D4EDD]/30 shadow-lg shadow-[#9D4EDD]/10 relative overflow-hidden"
             initial="hidden"
             animate={isFormInView ? "visible" : "hidden"}
             variants={containerVariants}
           >
             {/* Decorative elements */}
-            <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-purple-900/20 hidden md:block"></div>
-            <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-purple-900/20 hidden md:block"></div>
-
-            <div className="p-8 md:p-10 lg:p-16 space-y-6 relative z-10">
+            <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-purple-900/20"></div>
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-purple-900/20"></div>
+            
+            <div className="p-6 md:p-8 lg:p-10 space-y-5 relative z-10">
               <motion.h2
-                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#9D4EDD] mb-6 text-center md:text-left"
+                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#9D4EDD] mb-4 text-center md:text-left"
                 variants={itemVariants}
               >
                 Contact Me
               </motion.h2>
-              <form onSubmit={onSubmit} className="space-y-5 lg:space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6">
+              <form onSubmit={onSubmit} className="space-y-4 lg:space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                   <motion.div variants={formItemVariants}>
                     <input
                       type="text"
@@ -144,7 +144,7 @@ const ContactForm = () => {
                     />
                   </motion.div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                   <motion.div variants={formItemVariants}>
                     <input
                       type="email"
@@ -186,7 +186,7 @@ const ContactForm = () => {
                       <>
                         <motion.div
                           animate={{ rotate: 360 }}
-                          transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1, ease: "linear" }}
+                          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
                           className="w-5 h-5 lg:w-6 lg:h-6 border-2 border-white border-t-transparent rounded-full"
                         />
                         <span>Sending...</span>
@@ -206,24 +206,24 @@ const ContactForm = () => {
           {/* Contact Info */}
           <motion.div
             ref={infoContainerRef}
-            className="w-full md:w-1/2 bg-[#121212] border-0 md:border-l border-[#333333]"
+            className="w-full min-w-[300px] md:w-1/2 bg-[#121212] rounded-none sm:rounded-2xl border-x-0 sm:border border-[#9D4EDD]/30 shadow-lg shadow-[#9D4EDD]/10 relative overflow-hidden"
             initial="hidden"
             animate={isInfoInView ? "visible" : "hidden"}
             variants={containerVariants}
           >
             {/* Decorative elements */}
-            <div className="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-purple-900/20 hidden md:block"></div>
-            <div className="absolute -bottom-20 -right-20 w-40 h-40 rounded-full bg-purple-900/20 hidden md:block"></div>
-
-            <div className="p-8 md:p-10 lg:p-16 space-y-8 lg:space-y-10 relative z-10">
-              <div className="space-y-6 lg:space-y-8">
+            <div className="absolute -top-20 -left-20 w-40 h-40 rounded-full bg-purple-900/20"></div>
+            <div className="absolute -bottom-20 -right-20 w-40 h-40 rounded-full bg-purple-900/20"></div>
+            
+            <div className="p-6 md:p-8 lg:p-10 space-y-6 lg:space-y-10 relative z-10">
+              <div className="space-y-5 lg:space-y-8">
                 <motion.h2
-                  className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#9D4EDD] mb-6 lg:mb-8 text-center md:text-left"
+                  className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#9D4EDD] mb-4 lg:mb-6 text-center md:text-left"
                   variants={itemVariants}
                 >
                   Contact Information
                 </motion.h2>
-                <div className="space-y-6 lg:space-y-8 text-slate-300">
+                <div className="space-y-5 lg:space-y-8 text-slate-300">
                   <motion.div
                     className="flex items-center gap-4 p-3 lg:p-4 rounded-xl hover:bg-[#1A1A1A] transition-all duration-300"
                     variants={itemVariants}
@@ -308,8 +308,6 @@ const ContactForm = () => {
 }
 
 export default ContactForm
-
-
 
 
 

@@ -14,7 +14,7 @@ export default function Home() {
   
   return (
     
-      <main className="flex min-h-screen flex-col">
+      <main className="flex min-h-screen flex-col w-full">
         <Navbar />
         <div className="container mt-12 mx-auto px-12 py-14">
         <div id="home">
@@ -32,7 +32,7 @@ export default function Home() {
           <ProjectSection />
         </div>
         <br/>
-        <div id="contact" className="container mt-24 mx-auto px-12 py-4">
+        <div id="contact" className="container mt-24 mx-auto px-4 sm:px-6 lg:px-12 py-4">
           <ContactForm 
             github="https://github.com/gkontevas"
             linkedin="https://www.linkedin.com/in/dimos-gkontevas-bb87a22b3/"

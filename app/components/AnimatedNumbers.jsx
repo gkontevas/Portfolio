@@ -5,10 +5,10 @@ import { useSpring, useTransform, motion } from "framer-motion"
 
 export const AnimatedNumber = ({ value, className }) => {
   const springValue = useSpring(0, {
-    stiffness: 170, 
-    damping: 20, 
-    mass: 0.5, 
-    velocity: 10, 
+    stiffness: 100, // Reduced stiffness for smoother animation
+    damping: 30, // Increased damping for less bouncy effect
+    mass: 0.8, // Increased mass for more weight to the animation
+    velocity: 2, // Reduced initial velocity
     restDelta: 0.0001,
   })
 
@@ -22,6 +22,8 @@ export const AnimatedNumber = ({ value, className }) => {
 
   return <motion.span className={className}>{displayValue}</motion.span>
 }
+
+
 
 
 

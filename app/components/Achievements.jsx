@@ -7,18 +7,15 @@ const achievementsList = [
     metric: "Projects",
     value: 5,
     postfix: "+",
-    icon: "📊",
   },
   {
     metric: "Courses/Workshops",
     value: 2,
     prefix: "~",
-    icon: "🎓",
   },
   {
     metric: "Years",
     value: 2,
-    icon: "⏳",
   },
 ]
 

@@ -5,8 +5,6 @@ import { TypeAnimation } from 'react-type-animation';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
-
-
 const HeroSection = () => {
   const [randomValues, setRandomValues] = useState(null)
   const [isClient, setIsClient] = useState(false)
@@ -54,29 +52,50 @@ const HeroSection = () => {
     <section className='lg:py-14'>
     <div className='grid grid-cols-1 sm:grid-cols-12'>
     <motion.div 
-     initial={{opacity: 0, scale: 0.5 }}
-     animate={{opacity: 1, scale: 1}} 
-     transition={{duration: 0.4}}
+     initial={{opacity: 0, scale: 0.5, y: 20 }}
+     animate={{opacity: 1, scale: 1, y: 0 }} 
+     transition={{duration: 0.6, ease: "easeOut"}}
      className='col-span-8 place-self-center text-center sm:text-left justify-self-start'>
-      <h1 className='text-[#a0a0a0] mb-4 text-4xl sm:text-5xl lg:text-8xl lg:leading-normal font-extrabold'><div className='text-transparent bg-clip-text bg-gradient-to-r from-[#3c339a] to-[#8a00c4]'>
-        <span>Hello, I'm</span> {""}</div>
+      <motion.h1 
+        className='text-[#a0a0a0] mb-4 text-4xl sm:text-5xl lg:text-8xl lg:leading-normal font-extrabold'
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+      >
+        <motion.div 
+          className='text-transparent bg-clip-text bg-gradient-to-r from-[#3c339a] to-[#8a00c4]'
+          animate={{ 
+            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          style={{ backgroundSize: "200% 200%" }}
+        >
+          <span>Hello, I'm</span> {""}
+        </motion.div>
       <TypeAnimation
-      sequence={[
-        'Dimos',
-        1000, 
-        'a Developer',
-        1000,
-        'a Student',
-        1000,
-        'a Designer',
-        1000
-      ]}
-      wrapper="span"
-      speed={50}
-      repeat={Infinity}
-    />
-         </h1>
-      <p className='text-white" sm:text-lg lg:text-2xl mb-6 text-base italic' >Hello! Welcome to my self-made portfolio website! Feel free to take a look around and contact me if you are interested.</p>
+        sequence={[
+          'Dimos',
+          1000, 
+          'a Developer',
+          1000,
+          'a Student',
+          1000,
+          'a Designer',
+          1000
+        ]}
+        wrapper="span"
+        speed={50}
+        repeat={Infinity}
+      />
+      </motion.h1>
+      <motion.p 
+        className='text-white sm:text-lg lg:text-2xl mb-6 text-base italic'
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.6 }}
+      >
+        Hello! Welcome to my self-made portfolio website! Feel free to take a look around and contact me if you are interested.
+      </motion.p>
       {/* <div>
         <button className='px-6 py-3 w-full rounded-full mr-4 bg-white hover:bg-slate-200 text-white font-bold sm:w-fit bg-gradient-to-br from-red-950 via-red-700 to-red-500 '>Hire me</button>
 
@@ -87,7 +106,7 @@ const HeroSection = () => {
    <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
       className="col-span-4 place-self-center mt-4 lg:mt-0 relative"
     >
       {/* Morphing blob background */}
@@ -162,6 +181,7 @@ const HeroSection = () => {
               x: [particle.positions[0].x, particle.positions[1].x, particle.positions[2].x],
               y: [particle.positions[0].y, particle.positions[1].y, particle.positions[2].y],
               opacity: [0.2, 0.8, 0.2],
+              scale: [1, 1.2, 1],
             }}
             transition={{
               duration: particle.duration,
@@ -172,11 +192,12 @@ const HeroSection = () => {
         ))}
       </div>
 
-      {/* Glowing effect */}
+      {/* Improved Glowing effect */}
       <motion.div
         className="absolute inset-0 rounded-full bg-purple-500/10 blur-2xl z-0"
         animate={{
           scale: [1, 1.1, 1],
+          opacity: [0.5, 0.8, 0.5],
         }}
         transition={{
           duration: 5,
@@ -185,8 +206,25 @@ const HeroSection = () => {
         }}
       />
 
-      {/* Main image container */}
-      <div className="rounded-full bg-gradient-to-t from-[#3c339a] via-[#8a00c4] to-[#3c339a] w-[250px] h-[250px] lg:w-[400px] lg:h-[400px] sm:h-[200px] sm:w-[200px] relative overflow-hidden z-10">
+      {/* Main image container with subtle hover effect */}
+      <motion.div 
+        className="rounded-full bg-gradient-to-t from-[#3c339a] via-[#8a00c4] to-[#3c339a] w-[250px] h-[250px] lg:w-[400px] lg:h-[400px] sm:h-[200px] sm:w-[200px] relative overflow-hidden z-10"
+        whileHover={{ 
+          boxShadow: "0 0 25px rgba(138, 0, 196, 0.6)",
+          transition: { duration: 0.3 }
+        }}
+      >
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent"
+          animate={{
+            opacity: [0, 0.5, 0],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        />
         <Image
           src="/images/hero-image.png"
           alt="hero image"
@@ -194,9 +232,9 @@ const HeroSection = () => {
           width={500}
           height={500}
         />
-      </div>
+      </motion.div>
 
-      {/* Animated dashed border */}
+      {/* Animated dashed border with pulse effect */}
       <motion.div
         className="absolute inset-0 rounded-full border-2 border-dashed border-purple-400/50 z-5"
         style={{
@@ -205,8 +243,37 @@ const HeroSection = () => {
           left: "-10px",
           top: "-10px",
         }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+        animate={{ 
+          rotate: 360,
+          scale: [1, 1.03, 1],
+          borderColor: ["rgba(168, 85, 247, 0.3)", "rgba(168, 85, 247, 0.6)", "rgba(168, 85, 247, 0.3)"]
+        }}
+        transition={{ 
+          rotate: { duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+          scale: { duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+          borderColor: { duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
+        }}
+      />
+      
+      {/* Add a new pulsing ring effect */}
+      <motion.div
+        className="absolute rounded-full border border-purple-300/30 z-5"
+        style={{
+          width: "calc(100% + 40px)",
+          height: "calc(100% + 40px)",
+          left: "-20px",
+          top: "-20px",
+        }}
+        animate={{ 
+          scale: [1, 1.1, 1],
+          opacity: [0.1, 0.3, 0.1],
+        }}
+        transition={{ 
+          duration: 4,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "easeInOut", 
+          repeatType: "mirror"
+        }}
       />
     </motion.div>
 </div>

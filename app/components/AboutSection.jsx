@@ -86,8 +86,8 @@ const AboutSection = () => {
   }
 
   return (
-    <section className="text-white" id="about">
-      <div className="md:grid md:grid-cols-2 gap-8 items-center py-8 px-4 xl:gap-16 sm:py-16 xl:px-16">
+    <section className="text-white px-0" id="about">
+      <div className="md:grid md:grid-cols-2 gap-8 items-center py-8 px-0 xl:gap-16 sm:py-16">
       <motion.div
       className="relative w-fit mx-auto"
       initial={{ opacity: 0, y: 20 }}

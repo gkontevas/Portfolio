@@ -78,7 +78,7 @@ const ProjectSection = () => {
   }
 
   return (
-    <section>
+    <section className="px-0">
       <h2 className="text-slate-300 text-center text-4xl font-extrabold mt-4 mb-10" id="projects">
         My small Projects!
       </h2>

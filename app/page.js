@@ -12,7 +12,7 @@ import "./globals.css";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col w-full relative overflow-x-hidden">
-      {/* Particles Background with Fixed Position */}
+      {/* Particles Background */}
       <div className="absolute inset-0 -z-10">
         <ParticlesBackground />
       </div>

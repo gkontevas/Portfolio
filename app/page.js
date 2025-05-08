@@ -18,7 +18,7 @@ export default function Home() {
       </div>
       
       {/* Content */}
-      <div className="relative z-10 w-full max-w-full px-4 sm:px-8 md:px-12 py-8">
+      <div className="relative z-10 w-full flex flex-col items-center justify-center max-w-full px-4 sm:px-8 md:px-12 py-8">
         <Navbar />
         <div className="w-full mx-auto">
           {/* Increased margin-top for more space */}

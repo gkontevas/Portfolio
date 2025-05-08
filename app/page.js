@@ -21,8 +21,8 @@ export default function Home() {
       <div className="relative z-10 w-full max-w-full px-4 sm:px-8 md:px-12 py-8">
         <Navbar />
         <div className="w-full mx-auto">
-          {/* Add space only on smaller screens */}
-          <div id="home" className="w-full flex justify-center items-center py-12 sm:py-16 md:py-24 mt-4 sm:mt-8 md:mt-0">
+          {/* Increased margin-top for more space */}
+          <div id="home" className="w-full flex justify-center items-center py-12 sm:py-16 md:py-24 mt-8 sm:mt-16 md:mt-0">
             <HeroSection />
           </div>
           <div id="achievements" className="w-full py-8 sm:py-12 md:py-16">

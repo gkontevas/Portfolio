@@ -9,7 +9,7 @@ const TAB_DATA = [
     title: "Skills",
     id: "skills",
     content: (
-      <ul className="list-disc pl-2">
+      <ul className="pl-2">
         <li>React</li>
         <li>Next.js</li>
         <li>Python</li>
@@ -22,7 +22,7 @@ const TAB_DATA = [
     title: "Education",
     id: "education",
     content: (
-      <ul className="list-disc pl-2">
+      <ul className="pl-2">
         <li>On-going Studies at IEK EUROPROODOS.</li>
         <li>On-going workshops, seminars, and online courses.</li>
       </ul>
@@ -32,7 +32,7 @@ const TAB_DATA = [
     title: "Certifications",
     id: "certifications",
     content: (
-      <ul className="list-disc pl-2">
+      <ul className="pl-2">
         <li>E.C.D.L. Certificate</li>
         <li>Senior High School Lykeio Lehaiou Certificate</li>
       </ul>

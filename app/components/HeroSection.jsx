@@ -1,23 +1,21 @@
 "use client"
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
 
 const HeroSection = () => {
+  const [randomValues, setRandomValues] = useState(null)
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   const floatingAnimation = {
-  y: [0, -10, 0],
-  transition: {
-    duration: 3,
-    repeat: Number.POSITIVE_INFINITY,
-    repeatType: "reverse",
-  },
-}
-  const [randomValues, setRandomValues] = useState(null)
-  const [isClient, setIsClient] = useState(false)
+    y: [0, -10, 0],
+    transition: {
+      duration: 3,
+      repeat: Number.POSITIVE_INFINITY,
+      repeatType: "reverse",
+    },
+  }
 
-  // Text animation variants
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -42,7 +40,6 @@ const HeroSection = () => {
     }
   }
 
-  // Image animation variants
   const imageContainerVariants = {
     hidden: { opacity: 0, scale: 0.8, rotate: -5 },
     visible: {
@@ -75,12 +72,11 @@ const HeroSection = () => {
     }
   }
 
-  // Split text into words for animation
-  const titleText = "Hello, I'm Dimos".split(" ")
+  const titleText = "Hello, I'm".split(" ")
+  const lastWord = "Dimos"
   const subtitleText = "Developer | Student | Designer".split(" ")
 
   useEffect(() => {
-    setIsClient(true)
     const particles = Array(15).fill(0).map(() => ({
       width: Math.random() * 10 + 5,
       height: Math.random() * 10 + 5,
@@ -95,22 +91,6 @@ const HeroSection = () => {
     setRandomValues({ particles })
   }, [])
 
-  if (!isClient || !randomValues) {
-    return (
-      <div className="col-span-4 place-self-center mt-4 lg:mt-0 relative">
-        <div className="rounded-full bg-gradient-to-t from-[#3c339a] via-[#8a00c4] to-[#3c339a] w-[250px] h-[250px] lg:w-[400px] lg:h-[400px] sm:h-[200px] sm:w-[200px] relative overflow-hidden z-10">
-          <Image
-            src="/images/hero-image.png"
-            alt="hero image"
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-            width={500}
-            height={500}
-          />
-        </div>
-      </div>
-    )
-  }
-
   return (
     <section className='lg:py-14'>
       <div className='grid grid-cols-1 sm:grid-cols-12'>
@@ -121,7 +101,6 @@ const HeroSection = () => {
           transition={{duration: 0.6, ease: "easeOut"}}
           className='col-span-8 place-self-center text-center sm:text-left justify-self-start'
         >
-          {/* Animated title text */}
           <motion.div
             className='text-[#a0a0a0] mb-4 text-4xl sm:text-5xl lg:text-8xl lg:leading-normal font-extrabold'
             variants={textVariants}
@@ -134,18 +113,18 @@ const HeroSection = () => {
                 variants={wordVariants}
                 className='inline-block mr-2'
               >
-                {i === titleText.length - 1 ? (
-                  <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#3c339a] to-[#8a00c4]'>
-                    {word}
-                  </span>
-                ) : (
-                  word
-                )}
+                {word}
               </motion.span>
             ))}
+            <br />
+            <motion.span 
+              variants={wordVariants}
+              className='block text-transparent bg-clip-text bg-gradient-to-r from-[#3c339a] to-[#8a00c4] text-6xl sm:text-7xl lg:text-9xl'
+            >
+              {lastWord}
+            </motion.span>
           </motion.div>
 
-          {/* Animated subtitle */}
           <motion.div
             className="text-white sm:text-lg lg:text-2xl mb-6 italic"
             variants={textVariants}
@@ -163,7 +142,6 @@ const HeroSection = () => {
             ))}
           </motion.div>
 
-          {/* Welcome message */}
           <motion.p 
             className='text-white sm:text-lg lg:text-xl mb-6'
             initial={{ opacity: 0, y: 20 }}
@@ -177,33 +155,26 @@ const HeroSection = () => {
         {/* Right side - Animated image */}
         <motion.div
           initial="hidden"
-          animate="visible"
+          animate={imageLoaded ? "visible" : "hidden"}
           variants={imageContainerVariants}
           className="col-span-4 place-self-center mt-4 lg:mt-0 relative"
         >
-          {/* Gradient background with pulse effect */}
+          {/* Background pulse */}
           <motion.div
             className="absolute inset-0 rounded-full bg-gradient-to-t from-[#3c339a] via-[#8a00c4] to-[#3c339a] z-0"
-            animate={{
-              opacity: [0.8, 1, 0.8],
-              scale: [1, 1.02, 1],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
+            animate={{ opacity: [0.8, 1, 0.8], scale: [1, 1.02, 1] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
 
           {/* Floating particles */}
           <div className="absolute inset-0 overflow-hidden z-10">
-            {randomValues.particles.map((particle, i) => (
+            {randomValues?.particles.map((particle, i) => (
               <motion.div
                 key={i}
                 className="absolute rounded-full"
                 style={{
-                  width: particle.width + "px",
-                  height: particle.height + "px",
+                  width: `${particle.width}px`,
+                  height: `${particle.height}px`,
                   background: particle.color,
                   filter: "blur(1px)",
                   x: particle.positions[0].x,
@@ -223,20 +194,22 @@ const HeroSection = () => {
             ))}
           </div>
 
-          {/* Main image with subtle scale animation */}
+          {/* Main image */}
           <motion.div
-          className="relative w-[200px] h-[200px] sm:w-[250px] sm:h-[250px] lg:w-[400px] lg:h-[400px] rounded-full overflow-hidden z-20"
-          variants={imageVariants}
-            >
-              <Image
-                src="/images/hero-image.png"
-                alt="hero image"
-                fill
-                className="object-cover rounded-full"
-              />
-            </motion.div>
+            className="relative w-[200px] h-[200px] sm:w-[250px] sm:h-[250px] lg:w-[400px] lg:h-[400px] rounded-full overflow-hidden z-20"
+            variants={imageVariants}
+          >
+            <Image
+              src="/images/hero-image.png"
+              alt="hero image"
+              fill
+              className="object-cover rounded-full"
+              onLoadingComplete={() => setImageLoaded(true)}
+              priority
+            />
+          </motion.div>
 
-          {/* Glowing outline */}
+          {/* Glowing border */}
           <motion.div
             className="absolute inset-0 rounded-full border-2 border-purple-400/30 z-10"
             style={{

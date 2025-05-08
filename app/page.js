@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import HeroSection from "./components/HeroSection";
 import Navbar from "./components/Navbar";
@@ -8,13 +9,20 @@ import ContactForm from "./components/Contact";
 import Achievements from "./components/Achievements";
 import ParticlesBackground from "./components/ParticlesBackground";
 import "./globals.css";
+import { useState, useEffect } from "react";
+
 
 export default function Home() {
+  const [showParticles, setShowParticles] = useState(false);
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    setShowParticles(!isMobile);
+  }, []);
   return (
     <main className="flex min-h-screen flex-col w-full relative overflow-x-hidden">
-      {/* Particles Background */}
+
       <div className="absolute inset-0 -z-10">
-        <ParticlesBackground />
+      {showParticles && <ParticlesBackground />}
       </div>
       
       {/* Content */}

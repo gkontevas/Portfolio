@@ -3,8 +3,7 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 import NavLink from "./NavLink"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid"
-import MenuOverlay from "./MenuOverlay"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 
 const navLinks = [
   { title: "About", path: "#about" },
@@ -14,95 +13,151 @@ const navLinks = [
 
 const Navbar = () => {
   const [navbarOpen, setNavbarOpen] = useState(false)
-  const [scrollingDown, setScrollingDown] = useState(false)
-  const [prevScrollY, setPrevScrollY] = useState(0)
-  const [scrolled, setScrolled] = useState(false)
+  const [visible, setVisible] = useState(true)
+  const [lastScrollY, setLastScrollY] = useState(0)
+  const [isAtTop, setIsAtTop] = useState(true)
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
+      setIsAtTop(currentScrollY < 10)
 
-      // Detect scroll direction
-      if (currentScrollY > prevScrollY) {
-        setScrollingDown(true) // Scrolling down
-      } else {
-        setScrollingDown(false) // Scrolling up
+      // Always show at top of page
+      if (currentScrollY < 50) {
+        setVisible(true)
+        setLastScrollY(currentScrollY)
+        return
       }
 
-      // Detect if page is scrolled
-      if (currentScrollY > 20) {
-        setScrolled(true)
-      } else {
-        setScrolled(false)
+      // Hide when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setVisible(false)
+      } else if (currentScrollY < lastScrollY) {
+        setVisible(true)
       }
 
-      setPrevScrollY(currentScrollY)
+      setLastScrollY(currentScrollY)
     }
 
-    window.addEventListener("scroll", handleScroll)
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [prevScrollY])
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [lastScrollY])
 
   return (
     <motion.nav
-      key={scrollingDown ? "scrollingDown" : "scrollingUp"} // Ensures that React can track the state change
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: scrollingDown ? -100 : 0, opacity: 1 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      className={`fixed top-6 sm:top-2.5 left-1/2 transform -translate-x-1/2 w-[90%] md:w-[80%] ${
-        scrolled
-          ? "bg-purple-950/95 backdrop-blur-md shadow-xl"
-          : "bg-gradient-to-b from-purple-950 to-purple-900 backdrop-blur-sm"
-      } border border-purple-800 rounded-xl z-30 transition-all duration-300`}
+      initial={{ y: -100 }}
+      animate={{ 
+        y: visible ? 0 : -100,
+        opacity: visible ? 1 : 0
+      }}
+      transition={{ 
+        type: "spring",
+        damping: 20,
+        stiffness: 300
+      }}
+      className={`fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50`}
     >
-      <div className="flex container lg:py-4 flex-wrap items-center justify-between mx-auto px-6 py-3">
-        <Link href="/" className="text-xl md:text-2xl text-white font-extrabold">
-          D. Gkontevas
-        </Link>
-        <div className="mobile-menu block md:hidden">
-          <button
-            onClick={() => setNavbarOpen(!navbarOpen)}
-            className="flex items-center p-2 border rounded border-purple-700 text-purple-300 hover:text-white hover:border-white transition-colors duration-300"
+      <motion.div
+        animate={{
+          backgroundColor: isAtTop ? 'rgba(15, 0, 30, 0.5)' : 'rgba(15, 0, 30, 0.95)',
+          borderColor: isAtTop ? 'rgba(109, 40, 217, 0.3)' : 'rgba(109, 40, 217, 0.5)',
+          boxShadow: isAtTop ? '0 4px 30px rgba(76, 29, 149, 0.1)' : '0 8px 32px rgba(76, 29, 149, 0.3)'
+        }}
+        transition={{ duration: 0.3 }}
+        className={`rounded-2xl border backdrop-blur-lg`}
+      >
+        <div className="flex justify-between items-center px-6 py-3">
+          {/* Logo */}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {navbarOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
-          </button>
-        </div>
-        <div className="hidden md:block md:w-auto" id="navbar">
-          <ul className="flex p-4 md:p-0 md:flex-row md:space-x-8 mt-0">
+            <Link href="/" className="text-white group">
+              <span className="text-xl font-bold bg-gradient-to-r from-purple-300 to-purple-500 bg-clip-text text-transparent">
+                D. Gkontevas
+              </span>
+              <div className="h-[2px] bg-gradient-to-r from-purple-500 to-purple-300 w-0 group-hover:w-full transition-all duration-300" />
+            </Link>
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <motion.div 
+            className="hidden md:flex items-center space-x-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
             {navLinks.map((link, index) => (
-              <motion.li
-                key={link.title} // Ensure each link has a unique key
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="group"
+              <motion.div
+                key={link.path}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative"
               >
-                <NavLink href={link.path} title={link.title} />
-                <div className="h-0.5 w-0 bg-purple-300 group-hover:w-full transition-all duration-300"></div>
-              </motion.li>
+                <NavLink 
+                  href={link.path} 
+                  title={link.title}
+                  className="text-purple-200 hover:text-white px-3 py-2 transition-colors duration-200"
+                />
+                <motion.div
+                  className="absolute bottom-1 left-1/2 h-0.5 bg-purple-400"
+                  initial={{ width: 0, x: '-50%' }}
+                  whileHover={{ width: '80%', x: '-50%' }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                />
+              </motion.div>
             ))}
-          </ul>
+          </motion.div>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="md:hidden p-2 rounded-lg text-purple-300 hover:text-white focus:outline-none"
+            onClick={() => setNavbarOpen(!navbarOpen)}
+            aria-label="Toggle menu"
+          >
+            {navbarOpen ? (
+              <XMarkIcon className="h-6 w-6" />
+            ) : (
+              <Bars3Icon className="h-6 w-6" />
+            )}
+          </motion.button>
         </div>
-      </div>
-      {navbarOpen && <MenuOverlay links={navLinks} />}
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {navbarOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden md:hidden"
+            >
+              <div className="px-6 pb-4 space-y-4">
+                {navLinks.map((link) => (
+                  <motion.div
+                    key={link.path}
+                    initial={{ x: 20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ type: 'spring' }}
+                  >
+                    <NavLink 
+                      href={link.path} 
+                      title={link.title}
+                      className="block px-3 py-2 text-purple-200 hover:text-white rounded-lg hover:bg-purple-900/50 transition-colors"
+                      onClick={() => setNavbarOpen(false)}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </motion.nav>
   )
 }
 
 export default Navbar
-
-
-
-
-
-
-
-
-
-
-
-
-
-

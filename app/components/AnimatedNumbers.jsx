@@ -1,31 +1,24 @@
 "use client"
 
 import React from "react"
-import { useSpring, useTransform, motion } from "framer-motion"
+import { useSpring, useMotionValue, useTransform, motion, animate } from "framer-motion"
 
 export const AnimatedNumber = ({ value, className }) => {
-  const springValue = useSpring(0, {
-    stiffness: 100, // Reduced stiffness for smoother animation
-    damping: 30, // Increased damping for less bouncy effect
-    mass: 0.8, // Increased mass for more weight to the animation
-    velocity: 2, // Reduced initial velocity
-    restDelta: 0.0001,
+  const motionValue = useMotionValue(0)
+
+  const springValue = useSpring(motionValue, {
+    stiffness: 60,  // lower stiffness for smoother motion
+    damping: 20,    // soft damping for smooth stop
+    mass: 1.2,      // makes the motion feel heavier
   })
 
-  const displayValue = useTransform(springValue, (current) => {
-    return Math.round(current).toLocaleString("en-US")
-  })
+  const displayValue = useTransform(springValue, (latest) =>
+    Math.floor(latest).toLocaleString("en-US")
+  )
 
   React.useEffect(() => {
-    springValue.set(value)
-  }, [value, springValue])
+    animate(motionValue, value, { duration: 0.8, ease: [0.22, 1, 0.36, 1] }) // easeOutCubic
+  }, [value, motionValue])
 
   return <motion.span className={className}>{displayValue}</motion.span>
 }
-
-
-
-
-
-
-

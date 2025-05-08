@@ -6,6 +6,15 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
 const HeroSection = () => {
+
+  const floatingAnimation = {
+  y: [0, -10, 0],
+  transition: {
+    duration: 3,
+    repeat: Number.POSITIVE_INFINITY,
+    repeatType: "reverse",
+  },
+}
   const [randomValues, setRandomValues] = useState(null)
   const [isClient, setIsClient] = useState(false)
 

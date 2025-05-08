@@ -22,14 +22,12 @@ const Navbar = () => {
       const currentScrollY = window.scrollY
       setIsAtTop(currentScrollY < 10)
 
-      // Always show at top of page
       if (currentScrollY < 50) {
         setVisible(true)
         setLastScrollY(currentScrollY)
         return
       }
 
-      // Hide when scrolling down, show when scrolling up
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setVisible(false)
       } else if (currentScrollY < lastScrollY) {
@@ -125,7 +123,7 @@ const Navbar = () => {
           </motion.button>
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* Mobile Menu Overlay - Updated for centered text */}
         <AnimatePresence>
           {navbarOpen && (
             <motion.div
@@ -135,18 +133,19 @@ const Navbar = () => {
               transition={{ duration: 0.3 }}
               className="overflow-hidden md:hidden"
             >
-              <div className="px-6 pb-4 space-y-4">
+              <div className="px-6 pb-4 flex flex-col items-center space-y-4"> {/* Changed to flex-col and items-center */}
                 {navLinks.map((link) => (
                   <motion.div
                     key={link.path}
                     initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ type: 'spring' }}
+                    className="w-full text-center" // Added w-full and text-center
                   >
                     <NavLink 
                       href={link.path} 
                       title={link.title}
-                      className="block px-3 py-2 text-purple-200 hover:text-white rounded-lg hover:bg-purple-900/50 transition-colors"
+                      className="block px-3 py-2 text-purple-200 hover:text-white rounded-lg hover:bg-purple-900/50 transition-colors w-full text-center" // Added w-full and text-center
                       onClick={() => setNavbarOpen(false)}
                     />
                   </motion.div>

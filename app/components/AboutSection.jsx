@@ -161,7 +161,7 @@ const AboutSection = () => {
             About Me
           </h2>
           <p className="text-base lg:text-lg" style={{ fontFamily: "'Audiowide', cursive" }}>
-            I'm a 20-year-old beginner developer with a big passion for coding and the world of technology. Trying to improve every day and get the best out of myself! Below you can check my education and skills.
+            I'm a 20-year-old aspiring developer with a big passion for coding and the world of technology. Trying to improve every day and get the best out of myself! Below you can check my education and skills. My main focus is JavaScript, mainly on libraries like React, NextJs etc. Eager to learn more and more!
           </p>
           <div className="flex flex-wrap justify-center md:justify-start mt-8">
             <TabButton 

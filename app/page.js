@@ -12,39 +12,40 @@ import "./globals.css";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col w-full relative">
-  {/* Particles Background */}
-  <div className="absolute inset-0 -z-10">
-    <ParticlesBackground />
-  </div>
-
-  {/* Content */}
-  <div className="relative z-10">
-    <Navbar />
-    <div className="mt-12 mx-4 sm:mx-8 lg:mx-12 px-6 py-14">
-      <div id="home">
-        <HeroSection />
+      {/* Particles Background */}
+      <div className="absolute inset-0 -z-10">
+        <ParticlesBackground />
       </div>
-      <div id="achievements">
-        <Achievements />
+      
+      {/* Content */}
+      <div className="relative z-10">
+        <Navbar />
+        <div className="mx-auto px-4 sm:px-8 md:px-12 py-8 w-full">
+          <div id="home" className="w-full flex justify-center items-center py-12 sm:py-16 md:py-24">
+            <HeroSection />
+          </div>
+          {/* Reduced Gap for Achievements */}
+          <div id="achievements" className="w-full py-8 sm:py-12 md:py-16">
+            <Achievements />
+          </div>
+          <div id="about" className="w-full py-12 sm:py-16 md:py-24">
+            <AboutSection />
+          </div>
+          <div id="projects" className="w-full py-12 sm:py-16 md:py-24">
+            <ProjectSection />
+          </div>
+          <div id="contact" className="w-full py-12 sm:py-16 md:py-24">
+            <ContactForm 
+              github="https://github.com/gkontevas"
+              linkedin="https://www.linkedin.com/in/dimos-gkontevas-bb87a22b3/"
+              phone="6945004617"
+              email="dimosgkontevas1@gmail.com"
+              instagram="gkontevas_"
+            />
+          </div>
+        </div>
+        <Footer />
       </div>
-      <div id="about">
-        <AboutSection />
-      </div>
-      <div id="projects">
-        <ProjectSection />
-      </div>
-      <div id="contact" className="w-full flex flex-col sm:flex-row justify-center mt-24 mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <ContactForm 
-          github="https://github.com/gkontevas"
-          linkedin="https://www.linkedin.com/in/dimos-gkontevas-bb87a22b3/"
-          phone="6945004617"
-          email="dimosgkontevas1@gmail.com"
-          instagram="gkontevas_"
-        />
-      </div>
-    </div>
-    <Footer />
-  </div>
-</main>
+    </main>
   );
 }

@@ -1,12 +1,35 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'
 
 const HeroSection = () => {
   const [randomValues, setRandomValues] = useState(null)
   const [imageLoaded, setImageLoaded] = useState(false)
 
+  // Load Audiowide font
+  useEffect(() => {
+    const link = document.createElement('link')
+    link.href = 'https://fonts.googleapis.com/css2?family=Audiowide&display=swap'
+    link.rel = 'stylesheet'
+    document.head.appendChild(link)
+    
+    // Particle effect initialization
+    const particles = Array(15).fill(0).map(() => ({
+      width: Math.random() * 10 + 5,
+      height: Math.random() * 10 + 5,
+      color: `rgba(${Math.floor(Math.random() * 100 + 155)}, ${Math.floor(Math.random() * 50 + 50)}, ${Math.floor(Math.random() * 150 + 105)}, ${Math.random() * 0.5 + 0.2})`,
+      positions: [
+        { x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 },
+        { x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 },
+        { x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 },
+      ],
+      duration: Math.random() * 20 + 15,
+    }))
+    setRandomValues({ particles })
+  }, [])
+
+  // Animation configs (unchanged)
   const floatingAnimation = {
     y: [0, -10, 0],
     transition: {
@@ -40,59 +63,12 @@ const HeroSection = () => {
     }
   }
 
-  const imageContainerVariants = {
-    hidden: { opacity: 0, scale: 0.8, rotate: -5 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      rotate: 0,
-      transition: {
-        duration: 0.7,
-        ease: "easeOut",
-        delay: 0.4
-      }
-    },
-    hover: {
-      scale: 1.03,
-      boxShadow: "0 0 25px rgba(138, 0, 196, 0.4)",
-      transition: { duration: 0.3 }
-    }
-  }
-
-  const imageVariants = {
-    hidden: { opacity: 0, scale: 1.1 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        delay: 0.7,
-        ease: "easeOut"
-      }
-    }
-  }
-
   const titleText = "Hello, I'm".split(" ")
   const lastWord = "Dimos"
   const subtitleText = "Developer | Student | Designer".split(" ")
 
-  useEffect(() => {
-    const particles = Array(15).fill(0).map(() => ({
-      width: Math.random() * 10 + 5,
-      height: Math.random() * 10 + 5,
-      color: `rgba(${Math.floor(Math.random() * 100 + 155)}, ${Math.floor(Math.random() * 50 + 50)}, ${Math.floor(Math.random() * 150 + 105)}, ${Math.random() * 0.5 + 0.2})`,
-      positions: [
-        { x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 },
-        { x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 },
-        { x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 },
-      ],
-      duration: Math.random() * 20 + 15,
-    }))
-    setRandomValues({ particles })
-  }, [])
-
   return (
-    <section className='lg:py-14'>
+    <section className='lg:py-14' style={{ fontFamily: "'Audiowide', cursive" }}>
       <div className='grid grid-cols-1 sm:grid-cols-12'>
         {/* Left side - Text content */}
         <motion.div 
@@ -106,6 +82,7 @@ const HeroSection = () => {
             variants={textVariants}
             initial="hidden"
             animate="visible"
+            style={{ fontFamily: "'Audiowide', cursive" }}
           >
             {titleText.map((word, i) => (
               <motion.span 
@@ -120,6 +97,7 @@ const HeroSection = () => {
             <motion.span 
               variants={wordVariants}
               className='block text-transparent bg-clip-text bg-gradient-to-r from-[#3c339a] to-[#8a00c4] text-6xl sm:text-7xl lg:text-9xl'
+              style={{ fontFamily: "'Audiowide', cursive" }}
             >
               {lastWord}
             </motion.span>
@@ -130,6 +108,7 @@ const HeroSection = () => {
             variants={textVariants}
             initial="hidden"
             animate="visible"
+            style={{ fontFamily: "'Audiowide', cursive" }}
           >
             {subtitleText.map((word, i) => (
               <motion.span 
@@ -147,16 +126,34 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}
+            style={{ fontFamily: "'Audiowide', cursive" }}
           >
             Hello! Welcome to my self-made portfolio website! Feel free to take a look around.
           </motion.p>
         </motion.div>
 
-        {/* Right side - Animated image */}
+        {/* Right side - Animated image (unchanged) */}
         <motion.div
           initial="hidden"
           animate={imageLoaded ? "visible" : "hidden"}
-          variants={imageContainerVariants}
+          variants={{
+            hidden: { opacity: 0, scale: 0.8, rotate: -5 },
+            visible: {
+              opacity: 1,
+              scale: 1,
+              rotate: 0,
+              transition: {
+                duration: 0.7,
+                ease: "easeOut",
+                delay: 0.4
+              }
+            },
+            hover: {
+              scale: 1.03,
+              boxShadow: "0 0 25px rgba(138, 0, 196, 0.4)",
+              transition: { duration: 0.3 }
+            }
+          }}
           className="col-span-4 place-self-center mt-4 lg:mt-0 relative"
         >
           {/* Background pulse */}
@@ -197,14 +194,25 @@ const HeroSection = () => {
           {/* Main image */}
           <motion.div
             className="relative w-[200px] h-[200px] sm:w-[250px] sm:h-[250px] lg:w-[400px] lg:h-[400px] rounded-full overflow-hidden z-20"
-            variants={imageVariants}
+            variants={{
+              hidden: { opacity: 0, scale: 1.1 },
+              visible: {
+                opacity: 1,
+                scale: 1,
+                transition: {
+                  duration: 0.5,
+                  delay: 0.7,
+                  ease: "easeOut"
+                }
+              }
+            }}
           >
             <Image
               src="/images/hero-image.png"
               alt="hero image"
               fill
               className="object-cover rounded-full"
-              onLoadingComplete={() => setImageLoaded(true)}
+              onLoad={() => setImageLoaded(true)}
               priority
             />
           </motion.div>

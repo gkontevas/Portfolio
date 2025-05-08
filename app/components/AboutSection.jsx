@@ -9,7 +9,7 @@ const TAB_DATA = [
     title: "Skills",
     id: "skills",
     content: (
-      <ul className="pl-2">
+      <ul className="pl-2 font-audiowide">
         <li>React</li>
         <li>Next.js</li>
         <li>Python</li>
@@ -22,7 +22,7 @@ const TAB_DATA = [
     title: "Education",
     id: "education",
     content: (
-      <ul className="pl-2">
+      <ul className="pl-2 font-audiowide">
         <li>On-going Studies at IEK EUROPROODOS.</li>
         <li>On-going workshops, seminars, and online courses.</li>
       </ul>
@@ -32,7 +32,7 @@ const TAB_DATA = [
     title: "Certifications",
     id: "certifications",
     content: (
-      <ul className="pl-2">
+      <ul className="pl-2 font-audiowide">
         <li>E.C.D.L. Certificate</li>
         <li>Senior High School Lykeio Lehaiou Certificate</li>
       </ul>
@@ -47,15 +47,21 @@ const AboutSection = () => {
   const [isClient, setIsClient] = useState(false);
   const [randomValues, setRandomValues] = useState(null);
 
-  // Handle tab change
-  const handleTabChange = (id) => {
+   const handleTabChange = (id) => {
     startTransition(() => {
       setTab(id);
     });
   };
 
+
+  // Load Audiowide font
   useEffect(() => {
     setIsClient(true);
+    
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Audiowide&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
 
     const particles = Array(5)
       .fill(0)
@@ -83,7 +89,7 @@ const AboutSection = () => {
   }
 
   return (
-    <section className="text-white px-0" id="about">
+    <section className="text-white px-0" id="about" style={{ fontFamily: "'Audiowide', cursive" }}>
       <div className="flex flex-col items-center md:grid md:grid-cols-2 gap-8 py-8 sm:py-16 xl:gap-16">
         <motion.div
           className="relative w-full sm:w-[400px] md:w-[600px] mx-auto"
@@ -144,32 +150,45 @@ const AboutSection = () => {
                 alt="about-image"
                 width={600}
                 height={600}
-                className="relative z-10 opacity-100" // Ensuring full opacity
+                className="relative z-10 opacity-100"
               />
             </motion.div>
           </motion.div>
         </motion.div>
 
         <div className="mt-4 md:mt-0 text-center md:text-left flex flex-col h-full">
-          <h2 className="text-4xl font-bold text-purple-700 mb-4">About Me</h2>
-          <p className="text-base lg:text-lg">
+          <h2 className="text-6xl font-bold text-purple-700 mb-4" style={{ fontFamily: "'Audiowide', cursive" }}>
+            About Me
+          </h2>
+          <p className="text-base lg:text-lg" style={{ fontFamily: "'Audiowide', cursive" }}>
             I'm a 20-year-old beginner developer with a big passion for coding and the world of technology. Trying to improve every day and get the best out of myself! Below you can check my education and skills.
           </p>
           <div className="flex flex-wrap justify-center md:justify-start mt-8">
-            <TabButton selectTab={() => handleTabChange("skills")} active={tab === "skills"}>
-              {" "}
-              Skills{" "}
+            <TabButton 
+              selectTab={() => handleTabChange("skills")} 
+              active={tab === "skills"}
+              style={{ fontFamily: "'Audiowide', cursive" }}
+            >
+              Skills
             </TabButton>
-            <TabButton selectTab={() => handleTabChange("education")} active={tab === "education"}>
-              {" "}
-              Education{" "}
+            <TabButton 
+              selectTab={() => handleTabChange("education")} 
+              active={tab === "education"}
+              style={{ fontFamily: "'Audiowide', cursive" }}
+            >
+              Education
             </TabButton>
-            <TabButton selectTab={() => handleTabChange("certifications")} active={tab === "certifications"}>
-              {" "}
-              Certifications{" "}
+            <TabButton 
+              selectTab={() => handleTabChange("certifications")} 
+              active={tab === "certifications"}
+              style={{ fontFamily: "'Audiowide', cursive" }}
+            >
+              Certifications
             </TabButton>
           </div>
-          <div className="mt-8">{TAB_DATA.find((t) => t.id === tab).content}</div>
+          <div className="mt-8" style={{ fontFamily: "'Audiowide', cursive" }}>
+            {TAB_DATA.find((t) => t.id === tab).content}
+          </div>
         </div>
       </div>
     </section>

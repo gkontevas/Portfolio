@@ -11,16 +11,16 @@ import "./globals.css";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col w-full relative">
+    <main className="flex min-h-screen flex-col w-full relative overflow-x-hidden">
       {/* Particles Background */}
       <div className="absolute inset-0 -z-10">
         <ParticlesBackground />
       </div>
       
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 w-full max-w-full px-4 sm:px-8 md:px-12 py-8">
         <Navbar />
-        <div className="mx-auto px-4 sm:px-8 md:px-12 py-8 w-full">
+        <div className="w-full mx-auto">
           <div id="home" className="w-full flex justify-center items-center py-12 sm:py-16 md:py-24">
             <HeroSection />
           </div>

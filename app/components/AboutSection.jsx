@@ -87,17 +87,17 @@ const AboutSection = () => {
   }
 
   return (
-    <section className="text-white px-0" id="about" style={{ fontFamily: "'Audiowide', cursive" }}>
+    <section className="text-white" id="about" style={{ fontFamily: "'Audiowide', cursive" }}>
       <div className="flex flex-col md:flex-row items-center gap-8 py-8 sm:py-16 xl:gap-12 max-w-6xl mx-auto px-4">
         {/* Image Column - takes 50% width on medium screens and up */}
         <motion.div 
-          className="w-full md:w-1/2"
+          className="w-full md:w-1/2 flex justify-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <motion.div
-            className="relative w-full max-w-[500px] mx-auto"
+            className="relative w-full max-w-[400px] md:max-w-[500px] lg:max-w-[600px]"
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
           >
@@ -129,7 +129,7 @@ const AboutSection = () => {
             </motion.div>
 
             <motion.div
-              className="relative w-full h-auto mx-auto"
+              className="relative w-full h-auto"
               animate={{
                 boxShadow: isHovered
                   ? "0 20px 25px -5px rgba(60, 51, 154, 0.5), 0 8px 10px -6px rgba(138, 0, 196, 0.3)"
@@ -156,14 +156,14 @@ const AboutSection = () => {
         </motion.div>
 
         {/* Text Content Column - takes 50% width on medium screens and up */}
-        <div className="w-full md:w-1/2 mt-4 md:mt-0">
+        <div className="w-full md:w-1/2 text-center md:text-left">
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-purple-700 mb-4">
             About Me
           </h2>
-          <p className="text-base lg:text-lg mb-6">
+          <p className="text-base lg:text-lg mb-6 mx-auto md:mx-0 max-w-[500px] md:max-w-none">
             I'm a 20-year-old aspiring developer with a big passion for coding and the world of technology. Trying to improve every day and get the best out of myself! Below you can check my education and skills. My main focus is JavaScript, mainly on libraries like React, NextJs etc. Eager to learn more and more!
           </p>
-          <div className="flex flex-wrap justify-start gap-2 mb-8">
+          <div className="flex flex-row justify-center md:justify-start gap-2 mb-8 flex-wrap">
             <TabButton 
               selectTab={() => handleTabChange("skills")} 
               active={tab === "skills"}
@@ -183,7 +183,7 @@ const AboutSection = () => {
               Certifications
             </TabButton>
           </div>
-          <div className="mt-4">
+          <div className="mt-4 text-left">
             {TAB_DATA.find((t) => t.id === tab).content}
           </div>
         </div>

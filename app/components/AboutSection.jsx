@@ -156,14 +156,14 @@ const AboutSection = () => {
         </motion.div>
 
         {/* Text Content Column - takes 50% width on medium screens and up */}
-        <div className="w-full md:w-1/2 text-center md:text-left">
+        <div className="w-full md:w-1/2 text-center md:text-center">
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-purple-700 mb-4">
             About Me
           </h2>
           <p className="text-base lg:text-lg mb-6 mx-auto md:mx-0 max-w-[500px] md:max-w-none">
             I'm a 20-year-old aspiring developer with a big passion for coding and the world of technology. Trying to improve every day and get the best out of myself! Below you can check my education and skills. My main focus is JavaScript, mainly on libraries like React, NextJs etc. Eager to learn more and more!
           </p>
-          <div className="flex flex-row justify-center md:justify-start gap-2 mb-8 flex-wrap">
+          <div className="flex flex-row justify-center md:justify-center gap-2 mb-8 flex-wrap">
             <TabButton 
               selectTab={() => handleTabChange("skills")} 
               active={tab === "skills"}
@@ -183,7 +183,7 @@ const AboutSection = () => {
               Certifications
             </TabButton>
           </div>
-          <div className="mt-4 text-left">
+          <div className="mt-4 text-center">
             {TAB_DATA.find((t) => t.id === tab).content}
           </div>
         </div>

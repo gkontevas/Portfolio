@@ -59,6 +59,15 @@ const projectsData = [
     gitUrl: "https://github.com/gkontevas/Weather-App",
     previewUrl: "https://media.tenor.com/Z4H2w7dmSGgAAAAM/error-april-fool.gif",
   },
+  {
+    id: 7,
+    title: "Job Finder ",
+    description: "A job finding app developed with Next.js, Tailwind Css and the use of MongoDB. Developed in class with my teacher and classmates.",
+    image: "/images/projects/7.png",
+    tag: ["All", "JS"],
+    gitUrl: "https://github.com/gkontevas/Portfolio.git",
+    previewUrl: "https://media.tenor.com/Z4H2w7dmSGgAAAAM/error-april-fool.gif",
+  },
 ]
 const ProjectSection = () => {
   const ref = useRef(null)

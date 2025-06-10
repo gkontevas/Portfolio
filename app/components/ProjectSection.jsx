@@ -62,7 +62,7 @@ const projectsData = [
   {
     id: 7,
     title: "Job Finder ",
-    description: "A job finding app developed with Next.js, Tailwind Css and the use of MongoDB. Developed in class with my teacher and classmates.",
+    description: "A job finding app developed with Next.js, Tailwind Css and the use of MongoDB. Developed in class with my teacher and classmates. Still under development.",
     image: "/images/projects/7.png",
     tag: ["All", "JS"],
     gitUrl: "https://github.com/gkontevas/Portfolio.git",
@@ -88,15 +88,15 @@ const ProjectSection = () => {
 
   return (
     <section className="px-0">
-      <h2 className="text-slate-300 text-center text-4xl font-extrabold mt-4 mb-10" id="projects">
+      <h2 className="mt-4 mb-10 text-4xl font-extrabold text-center text-slate-300" id="projects">
         My small Projects!
       </h2>
-      <div className="text-white flex flex-row justify-center items-center gap-2 py-6">
+      <div className="flex flex-row items-center justify-center gap-2 py-6 text-white">
         <ProjectTag onClick={handleTabChange} name="All" isSelected={tag === "All"} />
         <ProjectTag onClick={handleTabChange} name="Python" isSelected={tag === "Python"} />
         <ProjectTag onClick={handleTabChange} name="JS" isSelected={tag === "JS"} />
       </div>
-      <ul ref={ref} className="grid md:grid-cols-3 gap-8 md:gap-12">
+      <ul ref={ref} className="grid gap-8 md:grid-cols-3 md:gap-12">
         {filteredProjects.map((project, index) => (
           <motion.li
             variants={cardVariants}

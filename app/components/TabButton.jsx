@@ -1,24 +1,43 @@
-import React from "react";
+import React, { useRef, useLayoutEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const variants = {
-  default: { width: 0 },
-  active: { width: "calc(100% - 0.75rem)" },
-};
-
 const TabButton = ({ active, selectTab, children }) => {
-  const buttonClasses = active ? "text-white" : "text-[#ADB7BE]";
+  const textRef = useRef(null);
+  const [underlineWidth, setUnderlineWidth] = useState(0);
+
+  useLayoutEffect(() => {
+    if (textRef.current) {
+      setUnderlineWidth(textRef.current.offsetWidth);
+    }
+  }, [children]);
 
   return (
-    <button onClick={selectTab}>
-      <p className={`mr-3 font-semibold hover:text-white ${buttonClasses}`}>
-        {children}
-      </p>
+    <button
+      onClick={selectTab}
+      className={`
+        font-orbitron
+        px-4 py-2
+        rounded-md
+        font-semibold
+        transition
+        duration-150
+        focus:outline-none
+        bg-transparent
+        mx-1
+        ${active 
+          ? "text-purple-700"
+          : "text-[#ADB7BE] hover:text-purple-700"
+        }
+      `}
+      style={{ display: "flex", flexDirection: "column", alignItems: "center", background: "transparent" }}
+    >
+      <span ref={textRef}>{children}</span>
       <motion.div
-        animate={active ? "active" : "default"}
-        variants={variants}
-        className="h-1 bg-purple-500 mt-2 mr-3"
-      ></motion.div>
+        animate={{ width: active ? underlineWidth : 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className="h-1 mt-1 bg-purple-500"
+        style={{ borderRadius: 2 }}
+      />
     </button>
   );
 };

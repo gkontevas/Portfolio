@@ -92,18 +92,20 @@ const ParticlesBackground = () => {
                 speed: 1.5
               }
             },
-            shape: {
-              type: ["circle", "char"],
-              character: isMobile ? undefined : [
-                {
-                  value: ["</>", "{}", "()", "#", "=>"],
-                  font: "Courier",
-                  style: "",
-                  weight: "400",
-                  fill: true // Makes characters solid purple
-                }
-              ]
-            },
+           shape: isMobile
+  ? { type: "circle" }
+  : {
+      type: ["circle", "char"],
+      character: [
+        {
+          value: ["</>", "{}", "()", "#", "=>"],
+          font: "Courier",
+          style: "",
+          weight: "400",
+          fill: true
+        }
+      ]
+    },
             size: {
               value: isMobile ? { min: 2, max: 5 } : { min: 3, max: 8 },
               animation: {

@@ -75,7 +75,7 @@ const HeroSection = () => {
           initial={{opacity: 0, scale: 0.5, y: 20 }}
           animate={{opacity: 1, scale: 1, y: 0 }} 
           transition={{duration: 0.6, ease: "easeOut"}}
-          className='col-span-8 place-self-center text-center sm:text-left justify-self-start'
+          className='col-span-8 text-center place-self-center sm:text-left justify-self-start'
         >
           <motion.div
             className='text-[#a0a0a0] mb-4 text-4xl sm:text-5xl lg:text-8xl lg:leading-normal font-extrabold'
@@ -104,7 +104,7 @@ const HeroSection = () => {
           </motion.div>
 
           <motion.div
-            className="text-white sm:text-lg lg:text-2xl mb-6 italic"
+            className="mb-6 italic text-white sm:text-lg lg:text-2xl"
             variants={textVariants}
             initial="hidden"
             animate="visible"
@@ -122,7 +122,7 @@ const HeroSection = () => {
           </motion.div>
 
           <motion.p 
-            className='text-white sm:text-lg lg:text-xl mb-6'
+            className='mb-6 text-white sm:text-lg lg:text-xl'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}
@@ -154,7 +154,7 @@ const HeroSection = () => {
               transition: { duration: 0.3 }
             }
           }}
-          className="col-span-4 place-self-center mt-4 lg:mt-0 relative"
+          className="relative col-span-4 mt-4 place-self-center lg:mt-0"
         >
           {/* Background pulse */}
           <motion.div
@@ -164,7 +164,7 @@ const HeroSection = () => {
           />
 
           {/* Floating particles */}
-          <div className="absolute inset-0 overflow-hidden z-10">
+          <div className="absolute inset-0 z-10 overflow-hidden">
             {randomValues?.particles.map((particle, i) => (
               <motion.div
                 key={i}
@@ -208,7 +208,7 @@ const HeroSection = () => {
             }}
           >
             <Image
-              src="/images/hero-image.png"
+              src="/images/hero-image.webp"
               alt="hero image"
               fill
               className="object-cover rounded-full"
@@ -219,7 +219,7 @@ const HeroSection = () => {
 
           {/* Glowing border */}
           <motion.div
-            className="absolute inset-0 rounded-full border-2 border-purple-400/30 z-10"
+            className="absolute inset-0 z-10 border-2 rounded-full border-purple-400/30"
             style={{
               width: "calc(100% + 20px)",
               height: "calc(100% + 20px)",

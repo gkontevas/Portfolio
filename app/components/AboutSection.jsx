@@ -79,7 +79,7 @@ const AboutSection = () => {
     return (
       <div className="relative mx-auto w-fit">
         <div className="relative overflow-hidden rounded-lg">
-          <Image src="/images/about-image.png" alt="about-image" width={500} height={500} />
+          <Image src="/images/about-image.webp" alt="about-image" width={500} height={500} />
         </div>
       </div>
     );
@@ -143,7 +143,7 @@ const AboutSection = () => {
                 transition={{ duration: 0.4 }}
               >
                 <Image
-                  src="/images/about-image.png"
+                  src="/images/about-image.webp"
                   alt="about-image"
                   width={900}
                   height={900}

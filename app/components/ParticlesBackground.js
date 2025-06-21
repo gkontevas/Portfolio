@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
-
+import dynamic from "next/dynamic";
 const ParticlesBackground = () => {
   const [isMobile, setIsMobile] = useState(false);
 

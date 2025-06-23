@@ -24,12 +24,13 @@ const TAB_DATA = [
     title: "Education",
     id: "education",
     content: (
-       <ul className="list-none font-audiowide dot-list">
+      <ul className="list-none font-audiowide dot-list">
         <li>On-going Studies at IEK EUROPROODOS.</li>
         <li>On-going workshops, seminars, and online courses.</li>
-        <li>Currently undertaking a 6-month legally
-        authorized intership,working collaboratively
-        in a team of two Web Developers/Designers.</li>
+        <li>
+          Currently undertaking a 6-month legally authorized internship,
+          working collaboratively in a team of two Web Developers/Designers.
+        </li>
       </ul>
     ),
   },
@@ -51,25 +52,28 @@ const AboutSection = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
-
- const handleTabChange = (id) => {
-  setTab(id);
-};
+  const handleTabChange = (id) => {
+    setTab(id);
+  };
 
   useEffect(() => {
     setIsClient(true);
-    
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Audiowide&display=swap';
-    link.rel = 'stylesheet';
+
+    const link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Audiowide&display=swap";
+    link.rel = "stylesheet";
     document.head.appendChild(link);
   }, []);
 
   return (
-    <section className="text-white" id="about" style={{ fontFamily: "'Audiowide', cursive" }}>
-      <div className="flex flex-col items-center max-w-6xl gap-8 px-4 py-8 mx-auto md:items-start md:flex-row sm:py-16 xl:gap-12">
+    <section
+      className="text-white"
+      id="about"
+      style={{ fontFamily: "'Audiowide', cursive" }}
+    >
+      <div className="flex flex-col items-center max-w-6xl gap-8 px-4 pt-4 pb-8 mx-auto md:items-start md:flex-row sm:pt-8 sm:pb-12 xl:gap-12">
         {/* Image Column - takes 50% width on medium screens and up */}
-        <motion.div 
+        <motion.div
           className="flex justify-center w-full md:w-1/2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -84,7 +88,11 @@ const AboutSection = () => {
               className="absolute z-0 rounded-lg -inset-4"
               style={{ background: "transparent" }}
             >
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <svg
+                className="absolute inset-0 w-full h-full"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+              >
                 <motion.rect
                   x="0"
                   y="0"
@@ -101,7 +109,11 @@ const AboutSection = () => {
                   }}
                   transition={{
                     rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                    strokeDashoffset: { duration: 2, repeat: Infinity, ease: "linear" },
+                    strokeDashoffset: {
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "linear",
+                    },
                   }}
                 />
               </svg>
@@ -135,12 +147,16 @@ const AboutSection = () => {
         </motion.div>
 
         {/* Text Content Column - takes 50% width on medium screens and up */}
-       <div className="w-full text-center md:w-1/2">
+        <div className="w-full text-center md:w-1/2">
           <h2 className="mb-4 text-4xl font-bold text-purple-700 sm:text-5xl md:text-6xl">
             About Me
           </h2>
-             <p className="text-base lg:text-lg mb-2 mx-auto md:mx-0 max-w-[500px] md:max-w-none">
-            I'm a 20-year-old aspiring developer with a big passion for coding and the world of technology. Trying to improve every day and get the best out of myself! Below you can check my education and skills. My main focus is JavaScript, mainly on libraries like React, NextJs etc. Eager to learn more and more!
+          <p className="text-base lg:text-lg mb-2 mx-auto md:mx-0 max-w-[500px] md:max-w-none">
+            I'm a 20-year-old aspiring developer with a big passion for coding
+            and the world of technology. Trying to improve every day and get
+            the best out of myself! Below you can check my education and skills.
+            My main focus is JavaScript, mainly on libraries like React, NextJs
+            etc. Eager to learn more and more!
           </p>
           <motion.div
             className="mx-auto md:mx-0 max-w-[500px] md:max-w-none mb-6"
@@ -155,33 +171,33 @@ const AboutSection = () => {
             }}
           />
           <div className="flex flex-col flex-wrap justify-center w-full max-w-xs gap-2 mx-auto mb-8 md:flex-row md:gap-4 md:max-w-none md:w-auto">
-  <TabButton 
-    selectTab={() => handleTabChange("skills")} 
-    active={tab === "skills"}
-    className="w-full px-4 py-2 text-base md:w-auto md:text-lg"
-  >
-    Skills
-  </TabButton>
-  <TabButton 
-    selectTab={() => handleTabChange("education")} 
-    active={tab === "education"}
-    className="w-full px-4 py-2 text-base md:w-auto md:text-lg"
-  >
-    Education
-  </TabButton>
-  <TabButton 
-    selectTab={() => handleTabChange("certifications")} 
-    active={tab === "certifications"}
-    className="w-full px-4 py-2 text-base md:w-auto md:text-lg"
-  >
-    Certifications
-  </TabButton>
-</div>
+            <TabButton
+              selectTab={() => handleTabChange("skills")}
+              active={tab === "skills"}
+              className="w-full px-4 py-2 text-base md:w-auto md:text-lg"
+            >
+              Skills
+            </TabButton>
+            <TabButton
+              selectTab={() => handleTabChange("education")}
+              active={tab === "education"}
+              className="w-full px-4 py-2 text-base md:w-auto md:text-lg"
+            >
+              Education
+            </TabButton>
+            <TabButton
+              selectTab={() => handleTabChange("certifications")}
+              active={tab === "certifications"}
+              className="w-full px-4 py-2 text-base md:w-auto md:text-lg"
+            >
+              Certifications
+            </TabButton>
+          </div>
           <div className="flex justify-center mt-4">
-  <div className="text-left">
-    {TAB_DATA.find((t) => t.id === tab).content}
-  </div>
-</div>
+            <div className="text-left">
+              {TAB_DATA.find((t) => t.id === tab).content}
+            </div>
+          </div>
         </div>
       </div>
     </section>

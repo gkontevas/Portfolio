@@ -64,14 +64,14 @@ const Navbar = () => {
         transition={{ duration: 0.3 }}
         className={`rounded-2xl border backdrop-blur-lg`}
       >
-        <div className="flex justify-between items-center px-6 py-3">
+        <div className="flex items-center justify-between px-6 py-3">
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <Link href="/" className="text-white group">
-              <span className="text-xl font-bold bg-gradient-to-r from-purple-300 to-purple-500 bg-clip-text text-transparent">
+              <span className="text-xl font-bold text-transparent bg-gradient-to-r from-purple-300 to-purple-500 bg-clip-text">
                 D. Gkontevas
               </span>
               <div className="h-[2px] bg-gradient-to-r from-purple-500 to-purple-300 w-0 group-hover:w-full transition-all duration-300" />
@@ -80,7 +80,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <motion.div 
-            className="hidden md:flex items-center space-x-6"
+            className="items-center hidden space-x-6 md:flex"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -95,7 +95,7 @@ const Navbar = () => {
                 <NavLink 
                   href={link.path} 
                   title={link.title}
-                  className="text-purple-200 hover:text-white px-3 py-2 transition-colors duration-200"
+                  className="px-3 py-2 text-purple-200 transition-colors duration-200 hover:text-white"
                 />
                 <motion.div
                   className="absolute bottom-1 left-1/2 h-0.5 bg-purple-400"
@@ -111,14 +111,14 @@ const Navbar = () => {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="md:hidden p-2 rounded-lg text-purple-300 hover:text-white focus:outline-none"
+            className="p-2 text-purple-300 rounded-lg md:hidden hover:text-white focus:outline-none"
             onClick={() => setNavbarOpen(!navbarOpen)}
             aria-label="Toggle menu"
           >
             {navbarOpen ? (
-              <XMarkIcon className="h-6 w-6" />
+              <XMarkIcon className="w-6 h-6" />
             ) : (
-              <Bars3Icon className="h-6 w-6" />
+              <Bars3Icon className="w-6 h-6" />
             )}
           </motion.button>
         </div>
@@ -133,7 +133,7 @@ const Navbar = () => {
               transition={{ duration: 0.3 }}
               className="overflow-hidden md:hidden"
             >
-              <div className="px-6 pb-4 flex flex-col items-center space-y-4"> {/* Changed to flex-col and items-center */}
+              <div className="flex flex-col items-center px-6 pb-4 space-y-4"> {/* Changed to flex-col and items-center */}
                 {navLinks.map((link) => (
                   <motion.div
                     key={link.path}
@@ -145,7 +145,7 @@ const Navbar = () => {
                     <NavLink 
                       href={link.path} 
                       title={link.title}
-                      className="block px-3 py-2 text-purple-200 hover:text-white rounded-lg hover:bg-purple-900/50 transition-colors w-full text-center" // Added w-full and text-center
+                      className="block w-full px-3 py-2 text-center text-purple-200 transition-colors rounded-lg hover:text-white hover:bg-purple-900/50" // Added w-full and text-center
                       onClick={() => setNavbarOpen(false)}
                     />
                   </motion.div>

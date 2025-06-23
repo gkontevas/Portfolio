@@ -30,6 +30,7 @@
     "react-type-animation": "^3.2.0",
     "sweetalert2": "^11.6.13",
     "swiper": "^11.2.8",
+    "tailwindcss-safe-area": "^0.6.0",
     "three": "^0.177.0",
     "tsparticles": "^3.8.1",
     "tsparticles-slim": "^2.12.0"

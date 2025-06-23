@@ -1,8 +1,8 @@
 "use client"
-import { useState, useRef } from "react"
+import { useState } from "react"
 import ProjectCard from "./ProjectCard"
-import ProjectTag from "./ProjectTag"
-import { motion, useInView } from "framer-motion"
+import Marquee from "react-fast-marquee"
+import { motion } from "framer-motion"
 
 const projectsData = [
   {
@@ -10,118 +10,120 @@ const projectsData = [
     title: "Stopwatch",
     description: "A simple stopwatch using Javascript, HTML and Css",
     image: "/images/projects/1.png",
-    tag: ["All", "JS"],
     gitUrl: "https://github.com/gkontevas/stopwatch",
-    previewUrl: "http://127.0.0.1:3001/stopwatch/index.html",
+
   },
   {
     id: 2,
     title: "Calculator",
     description: "A calculator program using JS",
     image: "/images/projects/2.png",
-    tag: ["All", "JS"],
     gitUrl: "https://github.com/gkontevas/calculator",
-    previewUrl: "http://127.0.0.1:3001/calculator/index.html",
+
   },
   {
     id: 3,
     title: "Countdown",
     description: "A countdown program I made using JS",
     image: "/images/projects/3.png",
-    tag: ["All", "JS"],
     gitUrl: "https://github.com/gkontevas/countdown",
-    previewUrl: "http://127.0.0.1:3001/countdown/index.html",
   },
   {
     id: 4,
     title: "Heart",
     description: "A heart created by Python code",
     image: "/images/projects/4.png",
-    tag: ["All", "Python"],
     gitUrl: "https://github.com/gkontevas/LovePython",
-    previewUrl: "https://media.tenor.com/Z4H2w7dmSGgAAAAM/error-april-fool.gif",
   },
   {
     id: 5,
     title: "Nasa API Project",
     description: "An API using JS, Jquery and Boostrap for NASA Picture of the Day",
     image: "/images/projects/5.png",
-    tag: ["All", "JS"],
     gitUrl: "https://github.com/gkontevas/NASA-API",
-    previewUrl: "https://media.tenor.com/Z4H2w7dmSGgAAAAM/error-april-fool.gif",
   },
   {
     id: 6,
     title: "Weather API",
     description: "A weather API using OpenWeatherApi",
     image: "/images/projects/6.png",
-    tag: ["All", "JS"],
     gitUrl: "https://github.com/gkontevas/Weather-App",
-    previewUrl: "https://media.tenor.com/Z4H2w7dmSGgAAAAM/error-april-fool.gif",
   },
   {
     id: 7,
     title: "Job Finder ",
     description: "A job finding app developed with Next.js, Tailwind Css and the use of MongoDB. Developed in class with my teacher and classmates. Still under development.",
     image: "/images/projects/7.png",
-    tag: ["All", "JS"],
     gitUrl: "https://github.com/gkontevas/Portfolio.git",
-    previewUrl: "https://media.tenor.com/Z4H2w7dmSGgAAAAM/error-april-fool.gif",
   },
 ]
+
+const staggerContainer = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.18,
+    },
+  },
+}
+
+const cardVariant = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut" } },
+}
+
 const ProjectSection = () => {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true })
-
-  const [tag, setTag] = useState("All")
-
-  const handleTabChange = (newTag) => {
-    setTag(newTag)
-  }
-
-  const filteredProjects = projectsData.filter((project) => project.tag.includes(tag))
-
-  const cardVariants = {
-    initial: { y: 50, opacity: 0 },
-    animate: { y: 0, opacity: 100 },
-  }
-
   return (
     <section className="px-0">
       <h2 className="mt-4 mb-10 text-4xl font-extrabold text-center text-slate-300" id="projects">
         My small Projects!
       </h2>
-      <div className="flex flex-row items-center justify-center gap-2 py-6 text-white">
-        <ProjectTag onClick={handleTabChange} name="All" isSelected={tag === "All"} />
-        <ProjectTag onClick={handleTabChange} name="Python" isSelected={tag === "Python"} />
-        <ProjectTag onClick={handleTabChange} name="JS" isSelected={tag === "JS"} />
-      </div>
-      <ul ref={ref} className="grid gap-8 md:grid-cols-3 md:gap-12">
-        {filteredProjects.map((project, index) => (
-          <motion.li
-            variants={cardVariants}
-            initial="initial"
-            animate={isInView ? "animate" : "initial"}
-            transition={{ duration: 1, delay: index * 0.2 }}
-            key={index}
-            className="h-full"
-          >
-            <ProjectCard
+      {/* Desktop Carousel */}
+      <div className="hidden w-full py-4 sm:block">
+        <Marquee
+          gradient={false}
+          speed={120}
+          pauseOnHover={true}
+          loop={0}
+        >
+          {projectsData.map((project) => (
+            <div
+              className="mx-6 w-[500px] md:w-[650px] flex-shrink-0"
               key={project.id}
+            >
+              <ProjectCard
+                title={project.title}
+                description={project.description}
+                imgUrl={project.image}
+                gitUrl={project.gitUrl}
+                previewUrl={project.previewUrl}
+              />
+            </div>
+          ))}
+        </Marquee>
+      </div>
+      {/* Mobile Framer Motion List */}
+           <motion.ul
+        className="flex flex-col items-center justify-center gap-7 sm:hidden"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        {projectsData.map((project, idx) => (
+          <motion.li key={project.id} variants={cardVariant} className="w-[90vw] max-w-[430px]">
+            <ProjectCard
               title={project.title}
               description={project.description}
               imgUrl={project.image}
-              tags={project}
               gitUrl={project.gitUrl}
               previewUrl={project.previewUrl}
             />
           </motion.li>
         ))}
-      </ul>
+      </motion.ul>
     </section>
   )
 }
 
 export default ProjectSection
-
-

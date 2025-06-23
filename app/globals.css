@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -31,4 +33,21 @@ html {
 
 .font-orbitron {
   font-family: 'Orbitron', sans-serif;
+}
+.dot-list li {
+  position: relative;
+  padding-left: 1em; /* less padding */
+  margin-bottom: 0.5em;
+}
+.dot-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.5em;
+  height: 0.5em;
+  background: #8a00c4;
+  border-radius: 50%;
+  display: inline-block;
 }

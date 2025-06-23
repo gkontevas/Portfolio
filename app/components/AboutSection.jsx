@@ -9,11 +9,14 @@ const TAB_DATA = [
     title: "Skills",
     id: "skills",
     content: (
-      <ul className="pl-2 font-audiowide">
+      <ul className="list-none font-audiowide dot-list">
         <li>React</li>
         <li>Next.js</li>
         <li>MongoDB</li>
         <li>Javascript</li>
+        <li>Wordpress</li>
+        <li>HTML</li>
+        <li>CSS</li>
       </ul>
     ),
   },
@@ -21,9 +24,12 @@ const TAB_DATA = [
     title: "Education",
     id: "education",
     content: (
-      <ul className="pl-2 font-audiowide">
+       <ul className="list-none font-audiowide dot-list">
         <li>On-going Studies at IEK EUROPROODOS.</li>
         <li>On-going workshops, seminars, and online courses.</li>
+        <li>Currently undertaking a 6-month legally
+        authorized intership,working collaboratively
+        in a team of two Web Developers/Designers.</li>
       </ul>
     ),
   },
@@ -31,7 +37,7 @@ const TAB_DATA = [
     title: "Certifications",
     id: "certifications",
     content: (
-      <ul className="pl-2 font-audiowide">
+      <ul className="list-none font-audiowide dot-list">
         <li>E.C.D.L. Certificate</li>
         <li>Senior High School Lykeio Lehaiou Certificate</li>
       </ul>
@@ -44,13 +50,11 @@ const AboutSection = () => {
   const [isPending, startTransition] = useTransition();
   const [isHovered, setIsHovered] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const [randomValues, setRandomValues] = useState(null);
 
-  const handleTabChange = (id) => {
-    startTransition(() => {
-      setTab(id);
-    });
-  };
+
+ const handleTabChange = (id) => {
+  setTab(id);
+};
 
   useEffect(() => {
     setIsClient(true);
@@ -59,35 +63,11 @@ const AboutSection = () => {
     link.href = 'https://fonts.googleapis.com/css2?family=Audiowide&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
-
-    const particles = Array(5)
-      .fill(0)
-      .map(() => ({
-        positions: [
-          { x: Math.random() * 500, y: Math.random() * 500 },
-          { x: Math.random() * 500, y: Math.random() * 500 },
-          { x: Math.random() * 500, y: Math.random() * 500 },
-        ],
-        duration: Math.random() * 10 + 10,
-        delay: Math.random() * 10,
-      }));
-
-    setRandomValues({ particles });
   }, []);
-
-  if (!isClient || !randomValues) {
-    return (
-      <div className="relative mx-auto w-fit">
-        <div className="relative overflow-hidden rounded-lg">
-          <Image src="/images/about-image.webp" alt="about-image" width={500} height={500} />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <section className="text-white" id="about" style={{ fontFamily: "'Audiowide', cursive" }}>
-      <div className="flex flex-col items-center max-w-6xl gap-8 px-4 py-8 mx-auto md:flex-row sm:py-16 xl:gap-12">
+      <div className="flex flex-col items-center max-w-6xl gap-8 px-4 py-8 mx-auto md:items-start md:flex-row sm:py-16 xl:gap-12">
         {/* Image Column - takes 50% width on medium screens and up */}
         <motion.div 
           className="flex justify-center w-full md:w-1/2"
@@ -159,9 +139,21 @@ const AboutSection = () => {
           <h2 className="mb-4 text-4xl font-bold text-purple-700 sm:text-5xl md:text-6xl">
             About Me
           </h2>
-          <p className="text-base lg:text-lg mb-6 mx-auto md:mx-0 max-w-[500px] md:max-w-none">
+             <p className="text-base lg:text-lg mb-2 mx-auto md:mx-0 max-w-[500px] md:max-w-none">
             I'm a 20-year-old aspiring developer with a big passion for coding and the world of technology. Trying to improve every day and get the best out of myself! Below you can check my education and skills. My main focus is JavaScript, mainly on libraries like React, NextJs etc. Eager to learn more and more!
           </p>
+          <motion.div
+            className="mx-auto md:mx-0 max-w-[500px] md:max-w-none mb-6"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            style={{
+              height: "3px",
+              background: "linear-gradient(90deg, #8a00c4 0%, #3c339a 100%)",
+              borderRadius: "2px",
+              originX: 0,
+            }}
+          />
           <div className="flex flex-col flex-wrap justify-center w-full max-w-xs gap-2 mx-auto mb-8 md:flex-row md:gap-4 md:max-w-none md:w-auto">
   <TabButton 
     selectTab={() => handleTabChange("skills")} 
@@ -185,9 +177,11 @@ const AboutSection = () => {
     Certifications
   </TabButton>
 </div>
-          <div className="mt-4 text-center">
-            {TAB_DATA.find((t) => t.id === tab).content}
-          </div>
+          <div className="flex justify-center mt-4">
+  <div className="text-left">
+    {TAB_DATA.find((t) => t.id === tab).content}
+  </div>
+</div>
         </div>
       </div>
     </section>

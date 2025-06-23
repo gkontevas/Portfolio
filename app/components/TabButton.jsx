@@ -15,10 +15,8 @@ const TabButton = ({ active, selectTab, children }) => {
     <button
       onClick={selectTab}
       className={`
-        font-orbitron
         px-4 py-2
         rounded-md
-        font-semibold
         transition
         duration-150
         focus:outline-none

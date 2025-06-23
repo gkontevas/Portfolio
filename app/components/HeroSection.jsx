@@ -45,34 +45,25 @@ const HeroSection = () => {
         </motion.p>
       </div>
       {/* Right Section */}
-    <div className="
-        flex items-center justify-center
-        w-full
-        min-h-[180px] max-h-[300px]  /* mobile: size limit */
-        sm:min-h-[250px] sm:max-h-[350px]
-        md:min-h-[300px] md:max-h-[400px]
-        xl:min-h-0 xl:max-h-none xl:w-1/2 xl:h-full
-      ">
-        <motion.div
-          initial={{ opacity: 0, y: 80 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            type: 'spring',
-            stiffness: 40,
-            damping: 25,
-            delay: 1.7,
-            duration: 1.5,
-          }}
-          className="relative flex items-center justify-center w-full h-full"
-        >
-          <div className="relative w-full h-full">
-            <Spline
-              className="!w-full !h-full"
-              scene="https://prod.spline.design/f3Tb9mT378GDmn0P/scene.splinecode"
-            />
-          </div>
-        </motion.div>
-      </div>
+    <div className="flex items-center justify-center w-full  xl:w-1/2 xl:h-full">
+  <motion.div
+    initial={{ opacity: 0, y: 80 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{
+      type: 'spring',
+      stiffness: 40,
+      damping: 25,
+      delay: 1.7,
+      duration: 1.5,
+    }}
+    className="relative w-full aspect-[4/3] sm:aspect-[5/3] md:aspect-[16/9] xl:aspect-auto xl:h-full"
+  >
+    <Spline
+      className="!absolute !inset-0"
+      scene="https://prod.spline.design/f3Tb9mT378GDmn0P/scene.splinecode"
+    />
+  </motion.div>
+</div>
     </section>
   )
 }

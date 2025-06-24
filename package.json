@@ -14,6 +14,7 @@
     "@react-three/fiber": "^9.1.2",
     "@splinetool/react-spline": "^4.0.0",
     "autoprefixer": "^10.4.21",
+    "emailjs-com": "^3.2.0",
     "framer-motion": "^12.5.0",
     "keen-slider": "^6.8.6",
     "lucide-react": "^0.479.0",

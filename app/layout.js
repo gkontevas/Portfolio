@@ -1,17 +1,6 @@
-import { Geist, Geist_Mono } from "next/font/google"
+
 import "./globals.css"
 import Spline from "@splinetool/react-spline";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-})
 
 export const metadata = {
   title: "Portfolio",

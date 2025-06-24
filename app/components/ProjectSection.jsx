@@ -62,14 +62,14 @@ const staggerContainer = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.18,
+      staggerChildren: 0.4,
     },
   },
 }
 
 const cardVariant = {
   hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut" } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 }
 
 const ProjectSection = () => {

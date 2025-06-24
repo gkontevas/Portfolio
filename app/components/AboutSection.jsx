@@ -60,7 +60,7 @@ const AboutSection = () => {
     setIsClient(true);
 
     const link = document.createElement("link");
-    link.href = "https://fonts.googleapis.com/css2?family=Audiowide&display=swap";
+    link.href = "https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap";
     link.rel = "stylesheet";
     document.head.appendChild(link);
   }, []);
@@ -69,7 +69,7 @@ const AboutSection = () => {
     <section
       className="text-white"
       id="about"
-      style={{ fontFamily: "'Audiowide', cursive" }}
+      style={{ fontFamily: "'Nunito', sans-serif" }}
     >
       <div className="flex flex-col items-center max-w-6xl gap-8 px-4 pt-4 pb-8 mx-auto md:items-start md:flex-row sm:pt-8 sm:pb-12 xl:gap-12">
         {/* Image Column - takes 50% width on medium screens and up */}

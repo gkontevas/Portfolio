@@ -126,17 +126,34 @@ const AboutSection = () => {
         document.head.appendChild(style);
       }
       
-      // Add scroll prevention ONLY on mobile devices
-      if (isMobile) {
-        const aboutSection = document.getElementById('about');
-        if (aboutSection) {
-          const aboutCanvases = aboutSection.querySelectorAll('canvas');
-          aboutCanvases.forEach(canvas => {
+      // Handle scroll interactions based on device
+      const aboutSection = document.getElementById('about');
+      if (aboutSection) {
+        const aboutCanvases = aboutSection.querySelectorAll('canvas');
+        aboutCanvases.forEach(canvas => {
+          if (isMobile) {
+            // Mobile: Disable ALL interactions
             canvas.addEventListener('wheel', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
             canvas.addEventListener('touchmove', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+            canvas.addEventListener('touchend', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+            canvas.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+            canvas.addEventListener('pointermove', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+            canvas.addEventListener('pointerup', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
             canvas.style.touchAction = 'none';
-          });
-        }
+            canvas.style.pointerEvents = 'none';
+          } else {
+            // Desktop: Allow 3D interactions but prevent page scrolling
+            canvas.addEventListener('wheel', (e) => { 
+              e.preventDefault(); 
+              e.stopPropagation(); 
+            }, { passive: false });
+            
+            // Allow mouse interactions for 3D model manipulation
+            canvas.style.touchAction = 'auto';
+            canvas.style.pointerEvents = 'auto';
+          }
+        });
       }
     }, 1000);
   };
@@ -232,9 +249,14 @@ const AboutSection = () => {
               
               {/* 3D Model Container */}
               <div className="absolute overflow-hidden rounded-full inset-4 bg-black/20" 
-                   onWheel={isMobile ? (e) => { e.preventDefault(); e.stopPropagation(); } : undefined} 
+                   onWheel={isMobile ? (e) => { e.preventDefault(); e.stopPropagation(); } : (e) => { e.preventDefault(); e.stopPropagation(); }} 
                    onTouchMove={isMobile ? (e) => { e.preventDefault(); e.stopPropagation(); } : undefined} 
-                   style={{ touchAction: isMobile ? 'none' : 'auto' }}>
+                   onTouchStart={isMobile ? (e) => { e.preventDefault(); e.stopPropagation(); } : undefined}
+                   onPointerDown={isMobile ? (e) => { e.preventDefault(); e.stopPropagation(); } : undefined}
+                   style={{ 
+                     touchAction: isMobile ? 'none' : 'auto',
+                     pointerEvents: isMobile ? 'none' : 'auto'
+                   }}>
                 <div className="relative w-full h-full">
                   {/* Mobile Optimized Experience with about-image.webp */}
                   {isMobile ? (
@@ -329,7 +351,7 @@ const AboutSection = () => {
                             transform: 'translate(-52%, -50%) scale(1.2)',
                             borderRadius: '50%', opacity: splineLoaded ? 1 : 0, 
                             transition: 'opacity 0.5s ease-in-out',
-                            pointerEvents: 'auto' // Enable interactions on desktop
+                            pointerEvents: 'auto' // Enable full interactions on desktop
                           }}
                         />
                       </div>

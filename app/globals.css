@@ -1,5 +1,28 @@
 @import "tailwindcss";
 
+/* Force consistent appearance - override browser light/dark mode */
+html {
+  color-scheme: dark !important;
+}
+
+* {
+  color-scheme: dark !important;
+}
+
+@media (prefers-color-scheme: light) {
+  html, body {
+    color-scheme: dark !important;
+    background-color: #0f0f23 !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html, body {
+    color-scheme: dark !important;
+    background-color: #0f0f23 !important;
+  }
+}
+
 /* Performance optimizations */
 * {
   will-change: auto;

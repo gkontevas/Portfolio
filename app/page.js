@@ -1,35 +1,33 @@
 "use client";
-
 import HeroSection from "./components/HeroSection";
 import Navbar from "./components/Navbar";
 import AboutSection from "./components/AboutSection";
-import ProjectSection from "./components/ProjectSection";
 import Footer from "./components/Footer";
-import ContactForm from "./components/Contact";
-import Achievements from "./components/Achievements";
 import "./globals.css";
+import dynamic from "next/dynamic";
 
+const DynamicProjectSection = dynamic(() => import("./components/ProjectSection"), {
+  loading: () => <div className="py-16 text-center text-purple-300">Loading projects...</div>
+});
+
+const DynamicContactForm = dynamic(() => import("./components/Contact"), {
+  loading: () => <div className="py-16 text-center text-purple-300">Loading contact form...</div>
+});
 export default function Home() {
-  return (
-    <main className="relative flex flex-col w-full min-h-screen">
-      {/* Navbar stays outside content for sticky behavior if needed */}
+  return (    <main className="relative flex flex-col w-full min-h-screen">
       <Navbar />
       <div className="flex-1 w-full mx-auto">
-        {/* HERO: No extra margin/padding around hero section */}
         <div id="home" className="flex items-center justify-center w-full min-h-screen">
           <HeroSection />
         </div>
-        {/* <div id="achievements" className="w-full py-8 sm:py-12 md:py-16">
-          <Achievements />
-        </div> */}
         <div id="about" className="w-full py-12 sm:py-16 md:py-24">
           <AboutSection />
         </div>
         <div id="projects" className="w-full py-12 sm:py-16 md:py-24">
-          <ProjectSection />
+          <DynamicProjectSection />
         </div>
         <div id="contact" className="w-full py-12 sm:py-16 md:py-24">
-          <ContactForm 
+          <DynamicContactForm 
             github="https://github.com/gkontevas"
             linkedin="https://www.linkedin.com/in/dimos-gkontevas-bb87a22b3/"
             phone="6945004617"

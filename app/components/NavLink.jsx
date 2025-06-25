@@ -1,12 +1,9 @@
 "use client"
-
 import { Link as ScrollLink } from "react-scroll"
 import Link from "next/link"
-
 const NavLink = ({ href, title, onClick, className = "" }) => {
   if (href.startsWith("#")) {
     const targetId = href.substring(1)
-
    return (
       <ScrollLink
         to={targetId}
@@ -21,7 +18,6 @@ const NavLink = ({ href, title, onClick, className = "" }) => {
       </ScrollLink>
     )
   }
-
   return (
     <Link href={href} onClick={onClick} className={`block py-2 pl-3 pr-4 text-white sm:text-xl rounded md:p-0 ${className}`}>
       {title}
@@ -29,12 +25,3 @@ const NavLink = ({ href, title, onClick, className = "" }) => {
   )
 }
 export default NavLink
-
-
-
-
-
-
-
-
-

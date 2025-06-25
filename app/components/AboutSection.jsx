@@ -60,7 +60,7 @@ const AboutSection = () => {
     setIsClient(true);
 
     const link = document.createElement("link");
-    link.href = "https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap";
+    link.href = "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap";
     link.rel = "stylesheet";
     document.head.appendChild(link);
   }, []);
@@ -69,7 +69,7 @@ const AboutSection = () => {
     <section
       className="text-white"
       id="about"
-      style={{ fontFamily: "'Nunito', sans-serif" }}
+      style={{ fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}
     >
       <div className="flex flex-col items-center max-w-6xl gap-8 px-4 pt-4 pb-8 mx-auto md:items-start md:flex-row sm:pt-8 sm:pb-12 xl:gap-12">
         {/* Image Column - takes 50% width on medium screens and up */}
@@ -148,10 +148,10 @@ const AboutSection = () => {
 
         {/* Text Content Column - takes 50% width on medium screens and up */}
         <div className="w-full text-center md:w-1/2">
-          <h2 className="mb-4 text-4xl font-bold text-purple-700 sm:text-5xl md:text-6xl">
+          <h2 className="mb-4 text-4xl font-bold text-purple-700 sm:text-5xl md:text-6xl tracking-tight">
             About Me
           </h2>
-          <p className="text-base lg:text-lg mb-2 mx-auto md:mx-0 max-w-[500px] md:max-w-none">
+          <p className="text-base lg:text-lg mb-2 mx-auto md:mx-0 max-w-[500px] md:max-w-none font-medium leading-relaxed">
             I'm a 20-year-old aspiring developer with a big passion for coding
             and the world of technology. Trying to improve every day and get
             the best out of myself! Below you can check my education and skills.

@@ -1,41 +1,28 @@
 "use client"
-
-import { useState, useRef } from "react"
+import { useState } from "react"
 import Swal from "sweetalert2"
 import Link from "next/link"
-import { motion, useInView } from "framer-motion"
+import { motion } from "framer-motion"
 import { MapPin, Phone, Mail, Instagram, Github, Linkedin, Send } from 'lucide-react'
 import emailjs from "emailjs-com";
-
 const inputActiveClass = "bg-[#240046]/40 border-[#9D4EDD] ring-2 ring-[#9D4EDD]"
-
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const formContainerRef = useRef(null)
-  const infoContainerRef = useRef(null)
-  const isFormInView = useInView(formContainerRef, { once: true, amount: 0.2 })
-  const isInfoInView = useInView(infoContainerRef, { once: true, amount: 0.2 })
-
-  // Add handlers to make input purple while typing
   function handleInput(e) {
     e.target.classList.add(...inputActiveClass.split(" "))
   }
   function handleBlur(e) {
     e.target.classList.remove(...inputActiveClass.split(" "))
   }
-
   async function onSubmit(event) {
     event.preventDefault();
-    setIsSubmitting(true);
-
-    try {
+    setIsSubmitting(true);    try {
       const result = await emailjs.sendForm(
-        "service_mk22466",      // Your Service ID
-        "template_kzhrp2r",     // Your Template ID
+        "service_mk22466",
+        "template_kzhrp2r",
         event.target,
-        "ZZaukPWHcZirnSjgv"     // Your Public Key
+        "ZZaukPWHcZirnSjgv"
       );
-
       if (result.status === 200) {
         Swal.fire({
           title: "Success!",
@@ -62,18 +49,16 @@ const ContactForm = () => {
       setIsSubmitting(false);
     }
   }
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        staggerChildren: 0.15,
+        delayChildren: 0.1,
       },
     },
   }
-
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -82,7 +67,6 @@ const ContactForm = () => {
       transition: { type: "spring", stiffness: 100 },
     },
   }
-
   const formItemVariants = {
     hidden: { x: -20, opacity: 0 },
     visible: {
@@ -91,34 +75,30 @@ const ContactForm = () => {
       transition: { type: "spring", stiffness: 100 },
     },
   }
-
   const buttonVariants = {
     initial: { scale: 1 },
     hover: { scale: 1.05, backgroundColor: "#7B2CBF", color: "#fff" },
     tap: { scale: 0.98 },
   }
-
   const socialVariants = {
     initial: { scale: 1, rotate: 0 },
     hover: { scale: 1.2, rotate: 5, color: "#9D4EDD" },
   }
-
   return (
     <div className="flex items-center justify-center w-full min-h-screen px-4 py-4 mx-auto sm:px-6 lg:px-8">
       <div className="w-full max-w-full xl:max-w-[1400px] 2xl:max-w-[1600px]">
         <div className="flex flex-col items-stretch w-full gap-6 md:flex-row lg:gap-8">
-          {/* Contact Form */}
+          
           <motion.div
-            ref={formContainerRef}
             className="flex flex-col w-full md:w-1/2"
             initial="hidden"
-            animate={isFormInView ? "visible" : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
             variants={containerVariants}
           >
             <div className="flex-1 bg-[#18122B] rounded-2xl border-x-0 sm:border border-[#3C096C]/40 shadow-lg shadow-[#9D4EDD]/10 relative overflow-hidden">
               <div className="absolute w-40 h-40 rounded-full -top-20 -right-20 bg-purple-900/20"></div>
               <div className="absolute w-40 h-40 rounded-full -bottom-20 -left-20 bg-purple-900/20"></div>
-              
               <div className="relative z-10 flex flex-col h-full p-6 space-y-5 md:p-8 lg:p-10">
                 <motion.h2
                   className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#9D4EDD] mb-4 text-center md:text-left"
@@ -216,19 +196,17 @@ const ContactForm = () => {
               </div>
             </div>
           </motion.div>
-
-          {/* Contact Info */}
+          {}
           <motion.div
-            ref={infoContainerRef}
             className="flex flex-col w-full md:w-1/2"
             initial="hidden"
-            animate={isInfoInView ? "visible" : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
             variants={containerVariants}
           >
             <div className="flex-1 bg-gradient-to-br from-[#9D4EDD]/80 via-[#7B2CBF]/80 to-[#3C096C]/90 rounded-2xl border-x-0 sm:border border-[#9D4EDD]/30 shadow-lg shadow-[#9D4EDD]/10 relative overflow-hidden">
               <div className="absolute w-40 h-40 rounded-full -top-20 -left-20 bg-purple-900/20"></div>
               <div className="absolute w-40 h-40 rounded-full -bottom-20 -right-20 bg-purple-900/20"></div>
-              
               <div className="relative z-10 flex flex-col h-full p-6 space-y-6 md:p-8 lg:p-10 lg:space-y-10">
                 <div className="space-y-5 lg:space-y-8">
                   <motion.h2
@@ -266,11 +244,12 @@ const ContactForm = () => {
                       <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-full lg:w-12 lg:h-12 bg-purple-900/30">
                         <Mail className="h-5 w-5 lg:h-6 lg:w-6 text-[#E0AAFF]" />
                       </div>
-                      <span className="text-base break-all lg:text-lg">dimosgkontevas1@gmail.com</span>
+                      <span className="flex-1 min-w-0 text-base sm:text-lg lg:text-xl">
+                        dimosgkontevas1<wbr /> @gmail.com
+                      </span>
                     </motion.div>
                   </div>
                 </div>
-
                 <motion.div className="mt-auto space-y-4 lg:space-y-6" variants={containerVariants}>
                   <motion.p
                     className="text-base font-medium text-center text-slate-200 md:text-left lg:text-lg"
@@ -289,7 +268,6 @@ const ContactForm = () => {
                         </motion.div>
                       </Link>
                     </motion.div>
-
                     <motion.div variants={itemVariants} whileHover="hover" initial="initial">
                       <Link
                         href="https://github.com/gkontevas"
@@ -300,7 +278,6 @@ const ContactForm = () => {
                         </motion.div>
                       </Link>
                     </motion.div>
-
                     <motion.div variants={itemVariants} whileHover="hover" initial="initial">
                       <Link
                         href="https://www.linkedin.com/in/dimos-gkontevas-bb87a22b3/"
@@ -321,5 +298,4 @@ const ContactForm = () => {
     </div>
   )
 }
-
 export default ContactForm

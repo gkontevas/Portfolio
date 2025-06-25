@@ -3,7 +3,6 @@ import { useState } from "react"
 import ProjectCard from "./ProjectCard"
 import Marquee from "react-fast-marquee"
 import { motion } from "framer-motion"
-
 const projectsData = [
   {
     id: 1,
@@ -11,7 +10,6 @@ const projectsData = [
     description: "A simple stopwatch using Javascript, HTML and Css",
     image: "/images/projects/1.png",
     gitUrl: "https://github.com/gkontevas/stopwatch",
-
   },
   {
     id: 2,
@@ -19,7 +17,6 @@ const projectsData = [
     description: "A calculator program using JS",
     image: "/images/projects/2.png",
     gitUrl: "https://github.com/gkontevas/calculator",
-
   },
   {
     id: 3,
@@ -57,7 +54,6 @@ const projectsData = [
     gitUrl: "https://github.com/gkontevas/Portfolio.git",
   },
 ]
-
 const staggerContainer = {
   hidden: {},
   show: {
@@ -66,19 +62,17 @@ const staggerContainer = {
     },
   },
 }
-
 const cardVariant = {
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 }
-
 const ProjectSection = () => {
   return (
     <section className="px-0">
       <h2 className="mt-4 mb-10 text-4xl font-extrabold text-center text-slate-300" id="projects">
         My small Projects!
       </h2>
-      {/* Desktop Carousel */}
+      {}
       <div className="hidden w-full py-4 sm:block">
         <Marquee
           gradient={false}
@@ -102,7 +96,7 @@ const ProjectSection = () => {
           ))}
         </Marquee>
       </div>
-      {/* Mobile Framer Motion List */}
+      {}
            <motion.ul
         className="flex flex-col items-center justify-center gap-7 sm:hidden"
         variants={staggerContainer}
@@ -125,5 +119,4 @@ const ProjectSection = () => {
     </section>
   )
 }
-
 export default ProjectSection

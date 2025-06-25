@@ -9,13 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@9am/fire-flame-react": "^0.3.2",
     "@heroicons/react": "^2.2.0",
+    "@newkrok/three-particles": "^2.1.0",
     "@react-three/drei": "^10.3.0",
     "@react-three/fiber": "^9.1.2",
     "@splinetool/react-spline": "^4.0.0",
     "autoprefixer": "^10.4.21",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.5.0",
+    "gl-shader": "^4.3.1",
+    "glslify": "^7.1.1",
     "keen-slider": "^6.8.6",
     "lucide-react": "^0.479.0",
     "next": "^15.3.3",
@@ -29,15 +33,19 @@
     "react-scroll": "^1.9.3",
     "react-tsparticles": "^2.12.2",
     "react-type-animation": "^3.2.0",
+    "react-vfx": "^0.12.0",
     "sweetalert2": "^11.6.13",
     "swiper": "^11.2.8",
     "tailwindcss-safe-area": "^0.6.0",
     "three": "^0.177.0",
+    "three.quarks": "^0.16.0",
     "tsparticles": "^3.8.1",
-    "tsparticles-slim": "^2.12.0"
+    "tsparticles-slim": "^2.12.0",
+    "webgl-generative-particles": "^0.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^15.3.4",
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.2.2",

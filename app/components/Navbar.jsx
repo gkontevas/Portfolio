@@ -4,43 +4,35 @@ import { useState, useEffect } from "react"
 import NavLink from "./NavLink"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid"
 import { motion, AnimatePresence } from "framer-motion"
-
 const navLinks = [
   { title: "About", path: "#about" },
   { title: "Projects", path: "#projects" },
   { title: "Contact", path: "#contact" },
 ]
-
 const Navbar = () => {
   const [navbarOpen, setNavbarOpen] = useState(false)
   const [visible, setVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isAtTop, setIsAtTop] = useState(true)
-
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
       setIsAtTop(currentScrollY < 10)
-
       if (currentScrollY < 50) {
         setVisible(true)
         setLastScrollY(currentScrollY)
         return
       }
-
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setVisible(false)
       } else if (currentScrollY < lastScrollY) {
         setVisible(true)
       }
-
       setLastScrollY(currentScrollY)
     }
-
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [lastScrollY])
-
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -63,9 +55,7 @@ const Navbar = () => {
         }}
         transition={{ duration: 0.3 }}
         className={`rounded-2xl border backdrop-blur-lg`}
-      >
-        <div className="flex items-center justify-between px-6 py-3">
-          {/* Logo */}
+      >        <div className="flex items-center justify-between px-6 py-3">
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -75,11 +65,8 @@ const Navbar = () => {
                 D. Gkontevas
               </span>
               <div className="h-[2px] bg-gradient-to-r from-purple-500 to-purple-300 w-0 group-hover:w-full transition-all duration-300" />
-            </Link>
-          </motion.div>
-
-          {/* Desktop Navigation */}
-          <motion.div 
+            </Link>          </motion.div>
+          <motion.div
             className="items-center hidden space-x-6 md:flex"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -106,8 +93,7 @@ const Navbar = () => {
               </motion.div>
             ))}
           </motion.div>
-
-          {/* Mobile Menu Button */}
+          {}
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -122,8 +108,7 @@ const Navbar = () => {
             )}
           </motion.button>
         </div>
-
-        {/* Mobile Menu Overlay - Updated for centered text */}
+        {}
         <AnimatePresence>
           {navbarOpen && (
             <motion.div
@@ -133,7 +118,7 @@ const Navbar = () => {
               transition={{ duration: 0.3 }}
               className="overflow-hidden md:hidden"
             >
-              <div className="flex flex-col items-center px-6 pb-4 space-y-4"> {/* Changed to flex-col and items-center */}
+              <div className="flex flex-col items-center px-6 pb-4 space-y-4"> {}
                 {navLinks.map((link) => (
                   <motion.div
                     key={link.path}
@@ -158,5 +143,4 @@ const Navbar = () => {
     </motion.nav>
   )
 }
-
 export default Navbar

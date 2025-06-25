@@ -1,28 +1,33 @@
-import { motion } from "framer-motion";
-import Spline from '@splinetool/react-spline';
+import { motion, useInView } from "framer-motion";
+import dynamic from 'next/dynamic';
+import { useRef } from 'react';
 
+const Spline = dynamic(() => import('@splinetool/react-spline'), {
+  ssr: false,
+  loading: () => <div className="flex items-center justify-center w-full h-full rounded-lg bg-purple-900/20 animate-pulse">
+    <div className="text-purple-300">Loading 3D Scene...</div>
+  </div>
+});
 const HeroSection = () => {
+  const heroRef = useRef(null);
+  const isInView = useInView(heroRef, { once: true, amount: 0.1 });
+  
   return (
     <section
+      ref={heroRef}
       className={`
-        relative flex flex-col-reverse items-center w-full
-        px-4 overflow-visible
-
-        gap-y-0  /* no vertical gap on mobile */
-        sm:gap-y-4 /* gap from tablet up */
-
-        min-h-auto    /* no forced min height on mobile */
-        sm:min-h-screen /* min height from tablet up */
-
-        justify-start sm:justify-between /* align top on mobile */
-        
-        xl:flex-row xl:px-24 xl:h-screen
-        pt-1 sm:pt-8 md:pt-12 /* minimal padding top mobile */
+        relative flex flex-col-reverse items-center w-full        px-4 overflow-visible
+        gap-y-0
+        sm:gap-y-4
+        min-h-auto
+        sm:min-h-screen
+        justify-center
+        sm:justify-between        xl:flex-row xl:px-24 xl:h-screen
+        pt-2 pb-0 sm:pt-8 md:pt-12 sm:pb-0
       `}
     >
-      {/* Left Section (Text) */}
       <div
-        className="z-40 flex flex-col items-center justify-center w-full text-center  xl:items-start xl:text-left xl:w-1/2"
+        className="z-40 flex flex-col items-center justify-center w-full text-center xl:items-start xl:text-left xl:w-1/2"
       >
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
@@ -31,7 +36,7 @@ const HeroSection = () => {
             type: 'spring',
             stiffness: 60,
             damping: 18,
-            delay: 1.1,
+            delay: 0.2,
             duration: 1.2,
           }}
           className="
@@ -43,7 +48,8 @@ const HeroSection = () => {
             Welcome to
           </span>
           <span className="block py-0 text-5xl font-extrabold tracking-wider text-transparent bg-gradient-to-r from-fuchsia-400 via-purple-500 to-indigo-500 bg-clip-text sm:text-6xl md:text-7xl lg:text-8xl drop-shadow-xl">
-            The World Of Wonders
+            <span className="whitespace-nowrap">The World</span>{' '}
+            <span className="whitespace-nowrap">Of Wonders</span>
           </span>
           <span className="absolute font-black -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none left-1/2 top-1/2 opacity-20 blur-2xl text-8xl sm:text-9xl text-fuchsia-400">
             ★
@@ -56,16 +62,13 @@ const HeroSection = () => {
             type: 'spring',
             stiffness: 60,
             damping: 18,
-            delay: 1.3,
+            delay: 0.4,
             duration: 1.2,
           }}
-          className="max-w-xl mb-0 text-lg italic font-medium leading-snug text-purple-200 sm:text-2xl"
+          className="max-w-xl mb-0 text-lg italic font-medium leading-snug text-purple-200 sm:mb-0 sm:text-2xl"
         >
-          Explore creativity, code, and collaboration. Here, ideas turn into interactive experiences and every line of code brings new possibilities. Let’s build something amazing together!
-        </motion.p>
+          Explore creativity, code, and collaboration. Here, ideas turn into interactive experiences and every line of code brings new possibilities. Let’s build something amazing together!        </motion.p>
       </div>
-
-      {/* Right Section (3D Animation) */}
       <div className="items-center justify-center hidden w-full sm:flex xl:w-1/2 xl:h-full">
         <motion.div
           initial={{ opacity: 0, y: 80 }}
@@ -74,7 +77,7 @@ const HeroSection = () => {
             type: 'spring',
             stiffness: 40,
             damping: 25,
-            delay: 1.7,
+            delay: 0.6,
             duration: 1.5,
           }}
           className="
@@ -93,5 +96,4 @@ const HeroSection = () => {
     </section>
   );
 };
-
 export default HeroSection;

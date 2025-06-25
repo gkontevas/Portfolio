@@ -10,7 +10,4 @@ const ProjectTag = ({ name, isSelected, onClick }) => {
     </button>
   );
 };
-
 export default ProjectTag;
-
-

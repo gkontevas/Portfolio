@@ -1,5 +1,4 @@
 import React from "react";
-
 const Footer = () => {
   return (
     <footer className="footer border z-10 border-t-purple-900 border-l-transparent border-r-transparent text-purple-950">

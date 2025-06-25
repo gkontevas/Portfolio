@@ -1,16 +1,13 @@
 import React, { useRef, useLayoutEffect, useState } from "react";
 import { motion } from "framer-motion";
-
 const TabButton = ({ active, selectTab, children }) => {
   const textRef = useRef(null);
   const [underlineWidth, setUnderlineWidth] = useState(0);
-
   useLayoutEffect(() => {
     if (textRef.current) {
       setUnderlineWidth(textRef.current.offsetWidth);
     }
   }, [children]);
-
   return (
     <button
       onClick={selectTab}
@@ -39,5 +36,4 @@ const TabButton = ({ active, selectTab, children }) => {
     </button>
   );
 };
-
 export default TabButton;

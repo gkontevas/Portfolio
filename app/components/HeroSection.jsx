@@ -2,12 +2,15 @@ import { motion, useInView } from "framer-motion";
 import dynamic from 'next/dynamic';
 import { useRef } from 'react';
 
-const Spline = dynamic(() => import('@splinetool/react-spline'), {
-  ssr: false,
-  loading: () => <div className="flex items-center justify-center w-full h-full rounded-lg bg-purple-900/20 animate-pulse">
-    <div className="text-purple-300">Loading 3D Scene...</div>
-  </div>
-});
+const Spline = dynamic(
+  () => import('@splinetool/react-spline'),
+  { 
+    ssr: false,
+    loading: () => <div className="flex items-center justify-center w-full h-full rounded-lg bg-purple-900/20 animate-pulse">
+      <div className="text-purple-300">Loading 3D Scene...</div>
+    </div>
+  }
+);
 const HeroSection = () => {
   const heroRef = useRef(null);
   const isInView = useInView(heroRef, { once: true, amount: 0.1 });

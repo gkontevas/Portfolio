@@ -10,6 +10,23 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
+  // Experimental features to help with build stability
+  experimental: {
+    optimizePackageImports: ['framer-motion', '@splinetool/runtime'],
+  },
+  // Turbopack configuration (now stable)
+  turbopack: {
+    // Turbopack configuration equivalent to webpack config
+    resolveAlias: {},
+    resolveExtensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+  },
+  // Webpack configuration to handle potential file system issues
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      config.cache = false;
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

@@ -1,50 +1,96 @@
 import { motion, useInView } from "framer-motion";
-import dynamic from 'next/dynamic';
-import { useRef, Suspense, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 const SplineComponent = ({ scene, className }) => {
-  const [hasError, setHasError] = useState(false);
-  
-  const Spline = dynamic(
-    () => import('@splinetool/react-spline'),
-    { 
-      ssr: false,
-      loading: () => <div className="flex items-center justify-center w-full h-full rounded-lg bg-purple-900/20 animate-pulse">
-        <div className="text-purple-300">Loading 3D Scene...</div>
-      </div>
-    }
-  );
+  const [mounted, setMounted] = useState(false);
+  const [splineLoaded, setSplineLoaded] = useState(false);
+  const [error, setError] = useState(false);
+  const containerRef = useRef(null);
 
-  if (hasError) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || !containerRef.current) return;
+
+    let splineApp = null;
+
+    const loadSpline = async () => {
+      try {
+        console.log('Loading Spline...');
+        const { Application } = await import('@splinetool/runtime');
+        
+        if (!containerRef.current) return;
+        
+        splineApp = new Application(containerRef.current);
+        
+        splineApp.load(scene)
+          .then(() => {
+            console.log('✅ Spline scene loaded successfully');
+            setSplineLoaded(true);
+          })
+          .catch((error) => {
+            console.error('❌ Failed to load Spline scene:', error);
+            setError(true);
+          });
+      } catch (importError) {
+        console.error('❌ Failed to import Spline runtime:', importError);
+        setError(true);
+      }
+    };
+
+    loadSpline();
+
+    return () => {
+      if (splineApp) {
+        try {
+          splineApp.dispose();
+        } catch (e) {
+          console.warn('Error disposing Spline app:', e);
+        }
+      }
+    };
+  }, [mounted, scene]);
+
+  if (!mounted) {
+    return (
+      <div className="flex items-center justify-center w-full h-full rounded-lg bg-purple-900/20 animate-pulse">
+        <div className="text-center">
+          <div className="text-purple-300">Initializing...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
     return (
       <div className="flex items-center justify-center w-full h-full border rounded-lg bg-gradient-to-br from-purple-900/30 to-fuchsia-900/30 border-purple-500/20">
         <div className="text-center">
           <div className="mb-4 text-6xl">🌟</div>
           <div className="text-purple-300">3D Scene Unavailable</div>
-          <div className="text-purple-400 text-sm mt-2">Interactive experience loading...</div>
+          <div className="mt-2 text-sm text-purple-400">Interactive experience loading...</div>
         </div>
       </div>
     );
   }
 
-  try {
-    return (
-      <Suspense fallback={
-        <div className="flex items-center justify-center w-full h-full rounded-lg bg-purple-900/20 animate-pulse">
-          <div className="text-purple-300">Loading 3D Scene...</div>
+  return (
+    <div className={className}>
+      <canvas 
+        ref={containerRef}
+        style={{ width: '100%', height: '100%', display: 'block' }}
+      />
+      {!splineLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center bg-purple-900/20 animate-pulse rounded-lg">
+          <div className="text-center">
+            <div className="text-purple-300">Loading 3D Scene...</div>
+            <div className="mt-1 text-xs text-purple-400">Please wait...</div>
+          </div>
         </div>
-      }>
-        <Spline
-          className={className}
-          scene={scene}
-          onError={() => setHasError(true)}
-        />
-      </Suspense>
-    );
-  } catch (error) {
-    setHasError(true);
-    return null;
-  }
+      )}
+    </div>
+  );
 };
 const HeroSection = () => {
   const heroRef = useRef(null);

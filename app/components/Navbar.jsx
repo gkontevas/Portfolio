@@ -4,6 +4,8 @@ import { useState, useEffect } from "react"
 import NavLink from "./NavLink"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid"
 import { motion, AnimatePresence } from "framer-motion"
+import { NavbarSkeleton } from "./Skeleton"
+import { useLoading } from "../contexts/LoadingContext"
 const navLinks = [
   { title: "About", path: "#about" },
   { title: "Projects", path: "#projects" },
@@ -14,6 +16,9 @@ const Navbar = () => {
   const [visible, setVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isAtTop, setIsAtTop] = useState(true)
+  const { isComponentLoading } = useLoading();
+  const isLoading = isComponentLoading('navbar');
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
@@ -33,6 +38,17 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [lastScrollY])
+
+  if (isLoading) {
+    return (
+      <div className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50">
+        <div className="bg-black/80 backdrop-blur-md border border-purple-500/20 rounded-2xl px-6 py-4">
+          <NavbarSkeleton />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <motion.nav
       initial={{ y: -100 }}

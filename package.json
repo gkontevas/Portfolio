@@ -14,9 +14,10 @@
     "@newkrok/three-particles": "^2.1.0",
     "@react-three/drei": "^10.3.0",
     "@react-three/fiber": "^9.1.2",
-    "@splinetool/react-spline": "^2.2.6",
+    "@splinetool/react-spline": "^4.0.0",
     "@splinetool/runtime": "^1.10.14",
     "autoprefixer": "^10.4.21",
+    "critters": "^0.0.23",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.5.0",
     "gl-shader": "^4.3.1",
@@ -42,6 +43,7 @@
     "three.quarks": "^0.16.0",
     "tsparticles": "^3.8.1",
     "tsparticles-slim": "^2.12.0",
+    "web-vitals": "^5.0.3",
     "webgl-generative-particles": "^0.0.1"
   },
   "devDependencies": {

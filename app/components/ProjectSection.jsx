@@ -1,8 +1,10 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import ProjectCard from "./ProjectCard"
 import Marquee from "react-fast-marquee"
 import { motion } from "framer-motion"
+import { ProjectsSkeleton } from "./Skeleton"
+import { useLoading } from "../contexts/LoadingContext"
 const projectsData = [
   {
     id: 1,
@@ -58,15 +60,48 @@ const staggerContainer = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.4,
+      staggerChildren: 0.25,
+      delayChildren: 0.2,
     },
   },
 }
+
 const cardVariant = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  hidden: { 
+    opacity: 0, 
+    y: 50,
+    scale: 0.95,
+  },
+  show: { 
+    opacity: 1, 
+    y: 0,
+    scale: 1,
+    transition: { 
+      type: "spring",
+      stiffness: 80,
+      damping: 20,
+      duration: 0.6,
+    }
+  },
+  hover: {
+    y: -8,
+    scale: 1.02,
+    rotateY: 2,
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 10
+    }
+  }
 }
 const ProjectSection = () => {
+  const { isComponentLoading } = useLoading();
+  const isLoading = isComponentLoading('projects');
+
+  if (isLoading) {
+    return <ProjectsSkeleton />;
+  }
+
   return (
     <section className="px-0">
       <motion.h2 
@@ -80,31 +115,48 @@ const ProjectSection = () => {
           duration: 1.2,
         }}
         viewport={{ once: true, amount: 0.3 }}
-        className="relative mt-4 mb-16 text-4xl sm:text-5xl md:text-6xl font-extrabold text-center tracking-tight overflow-visible" 
+        className="relative mt-4 mb-16 overflow-visible text-4xl font-extrabold tracking-tight text-center sm:text-5xl md:text-6xl" 
         id="projects"
       >
         <span className="block text-transparent bg-gradient-to-r from-purple-400 via-fuchsia-400 to-indigo-400 bg-clip-text drop-shadow-[0_4px_24px_rgba(168,85,247,0.4)]">
           My
         </span>
-        <span className="block text-transparent bg-gradient-to-r from-fuchsia-400 via-purple-500 to-indigo-500 bg-clip-text text-5xl sm:text-6xl md:text-7xl font-black tracking-wider drop-shadow-xl -mt-2">
+        <span className="block -mt-2 text-5xl font-black tracking-wider text-transparent bg-gradient-to-r from-fuchsia-400 via-purple-500 to-indigo-500 bg-clip-text sm:text-6xl md:text-7xl drop-shadow-xl">
           Work
         </span>
-        <span className="absolute font-black -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none left-1/2 top-1/2 opacity-15 blur-2xl text-6xl sm:text-7xl md:text-8xl text-fuchsia-400">
+        <span className="absolute text-6xl font-black -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none left-1/2 top-1/2 opacity-15 blur-2xl sm:text-7xl md:text-8xl text-fuchsia-400">
           ⚡
         </span>
       </motion.h2>
-      {}
+      {/* Desktop Marquee */}
       <div className="hidden w-full py-4 sm:block">
         <Marquee
-          gradient={false}
-          speed={120}
+          gradient={true}
+          gradientColor="rgb(88, 28, 135)"
+          gradientWidth={80}
+          speed={60}
           pauseOnHover={true}
+          pauseOnClick={true}
           loop={0}
+          className="overflow-hidden"
         >
           {projectsData.map((project) => (
-            <div
+            <motion.div
               className="mx-6 w-[500px] md:w-[650px] flex-shrink-0"
               key={project.id}
+              whileHover={{
+                scale: 1.05,
+                y: -10,
+                rotateY: 5,
+                transition: {
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20
+                }
+              }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0.8 }}
+              whileInView={{ opacity: 1 }}
             >
               <ProjectCard
                 title={project.title}
@@ -113,12 +165,12 @@ const ProjectSection = () => {
                 gitUrl={project.gitUrl}
                 previewUrl={project.previewUrl}
               />
-            </div>
+            </motion.div>
           ))}
         </Marquee>
       </div>
-      {}
-           <motion.ul
+      {/* Mobile Stacked Cards */}
+      <motion.ul
         className="flex flex-col items-center justify-center gap-7 sm:hidden"
         variants={staggerContainer}
         initial="hidden"

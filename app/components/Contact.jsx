@@ -1,13 +1,22 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Swal from "sweetalert2"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { MapPin, Phone, Mail, Instagram, Github, Linkedin, Send } from 'lucide-react'
 import emailjs from "emailjs-com";
+import { ContactSkeleton } from "./Skeleton";
+import { useLoading } from "../contexts/LoadingContext";
+
 const inputActiveClass = "bg-[#240046]/40 border-[#9D4EDD] ring-2 ring-[#9D4EDD]"
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { isComponentLoading } = useLoading();
+  const isLoading = isComponentLoading('contact');
+
+  if (isLoading) {
+    return <ContactSkeleton />;
+  }
   function handleInput(e) {
     e.target.classList.add(...inputActiveClass.split(" "))
   }

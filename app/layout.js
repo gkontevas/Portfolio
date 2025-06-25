@@ -1,4 +1,5 @@
 import "./globals.css"
+import { LoadingProvider } from "./contexts/LoadingContext"
 
 export const metadata = {
   title: "Dimos Gkontevas - Web Developer Portfolio",
@@ -28,7 +29,9 @@ export default function RootLayout({ children }) {
           }}
         >
            </div>
-        <div className="relative z-10 min-h-screen overflow-x-hidden">{children}</div>
+        <LoadingProvider>
+          <div className="relative z-10 min-h-screen overflow-x-hidden">{children}</div>
+        </LoadingProvider>
       </body>
     </html>
   );

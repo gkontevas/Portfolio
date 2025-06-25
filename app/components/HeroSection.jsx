@@ -1,5 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from 'react';
+import { HeroSkeleton } from "./Skeleton";
+import { useLoading } from "../contexts/LoadingContext";
 
 const SplineComponent = ({ scene, className }) => {
   const [mounted, setMounted] = useState(false);
@@ -82,7 +84,7 @@ const SplineComponent = ({ scene, className }) => {
         style={{ width: '100%', height: '100%', display: 'block' }}
       />
       {!splineLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-purple-900/20 animate-pulse rounded-lg">
+        <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-purple-900/20 animate-pulse">
           <div className="text-center">
             <div className="text-purple-300">Loading 3D Scene...</div>
             <div className="mt-1 text-xs text-purple-400">Please wait...</div>
@@ -95,7 +97,13 @@ const SplineComponent = ({ scene, className }) => {
 const HeroSection = () => {
   const heroRef = useRef(null);
   const isInView = useInView(heroRef, { once: true, amount: 0.1 });
-  
+  const { isComponentLoading } = useLoading();
+  const isLoading = isComponentLoading('hero');
+
+  if (isLoading) {
+    return <HeroSkeleton />;
+  }
+
   return (
     <section
       ref={heroRef}

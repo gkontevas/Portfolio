@@ -22,6 +22,22 @@ html, body {
   }
 }
 
+/* Spline watermark hiding - Clean and invisible approach */
+a[href*="spline.design"],
+[class*="watermark"], 
+[id*="watermark"],
+canvas + div[style*="position: absolute"],
+canvas ~ div[style*="position: absolute"][style*="bottom"],
+iframe + div[style*="position: absolute"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
 /* GPU acceleration for key elements */
 .gpu-accelerated {
   transform: translateZ(0);

@@ -6,7 +6,7 @@ const SplineComponent = ({ scene, className }) => {
   const [hasError, setHasError] = useState(false);
   
   const Spline = dynamic(
-    () => import('@splinetool/react-spline').then((mod) => ({ default: mod.default })),
+    () => import('@splinetool/react-spline'),
     { 
       ssr: false,
       loading: () => <div className="flex items-center justify-center w-full h-full rounded-lg bg-purple-900/20 animate-pulse">
@@ -21,7 +21,7 @@ const SplineComponent = ({ scene, className }) => {
         <div className="text-center">
           <div className="mb-4 text-6xl">🌟</div>
           <div className="text-purple-300">3D Scene Unavailable</div>
-          <div className="mt-2 text-sm text-purple-400">Interactive experience loading...</div>
+          <div className="text-purple-400 text-sm mt-2">Interactive experience loading...</div>
         </div>
       </div>
     );

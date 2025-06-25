@@ -31,6 +31,14 @@ const SplineComponent = ({ scene, className }) => {
           .then(() => {
             console.log('✅ Spline scene loaded successfully');
             setSplineLoaded(true);
+            
+            // Completely disable all interactions
+            const canvas = containerRef.current?.querySelector('canvas');
+            if (canvas) {
+              canvas.style.pointerEvents = 'none';
+              canvas.style.userSelect = 'none';
+              canvas.style.touchAction = 'none';
+            }
           })
           .catch((error) => {
             console.error('❌ Failed to load Spline scene:', error);
@@ -78,10 +86,24 @@ const SplineComponent = ({ scene, className }) => {
   }
 
   return (
-    <div className={className}>
+    <div 
+      className={className} 
+      style={{ 
+        pointerEvents: 'none',
+        touchAction: 'none',
+        userSelect: 'none'
+      }}
+    >
       <canvas 
         ref={containerRef}
-        style={{ width: '100%', height: '100%', display: 'block' }}
+        style={{ 
+          width: '100%', 
+          height: '100%', 
+          display: 'block',
+          pointerEvents: 'none',
+          touchAction: 'none',
+          userSelect: 'none'
+        }}
       />
       {!splineLoaded && (
         <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-purple-900/20 animate-pulse">
@@ -159,7 +181,7 @@ const HeroSection = () => {
           }}
           className="max-w-xl mb-0 text-lg italic font-medium leading-snug text-purple-200 sm:mb-0 sm:text-2xl"
         >
-          Explore creativity, code, and collaboration. Here, ideas turn into interactive experiences and every line of code brings new possibilities. Let’s build something amazing together!        </motion.p>
+        <b>Any fool can write code that a computer can understand. Good programmers write code that humans can understand.</b>  <i>- Martin Fowler </i>       </motion.p>
       </div>
       <div className="items-center justify-center hidden w-full sm:flex xl:w-1/2 xl:h-full">
         <motion.div
@@ -181,7 +203,7 @@ const HeroSection = () => {
         >
           <SplineComponent
             className="!absolute !inset-0"
-            scene="https://prod.spline.design/f3Tb9mT378GDmn0P/scene.splinecode"
+              scene="https://prod.spline.design/tF28HXnwN4ohvRC9/scene.splinecode" 
           />
         </motion.div>
       </div>

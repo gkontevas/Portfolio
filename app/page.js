@@ -20,13 +20,13 @@ export default function Home() {
         <div id="home" className="flex items-center justify-center w-full">
           <HeroSection />
         </div>
-        <div id="about" className="w-full py-16 sm:py-20 md:py-24">
+        <div id="about" className="w-full py-16 sm:py-20 md:py-24 scroll-navbar-offset">
           <AboutSection />
         </div>
-        <div id="projects" className="w-full py-12 sm:py-16 md:py-24">
+        <div className="w-full py-16 sm:py-20 md:py-24">
           <DynamicProjectSection />
         </div>
-        <div id="contact" className="w-full py-12 sm:py-16 md:py-24">
+        <div id="contact" className="w-full py-16 sm:py-20 md:py-24 scroll-navbar-offset">
           <DynamicContactForm 
             github="https://github.com/gkontevas"
             linkedin="https://www.linkedin.com/in/dimos-gkontevas-bb87a22b3/"

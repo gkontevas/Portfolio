@@ -1,5 +1,4 @@
 "use client"
-import { useState, useEffect } from "react"
 import ProjectCard from "./ProjectCard"
 import Marquee from "react-fast-marquee"
 import { motion } from "framer-motion"
@@ -56,44 +55,7 @@ const projectsData = [
     gitUrl: "https://github.com/gkontevas/Portfolio.git",
   },
 ]
-const staggerContainer = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.25,
-      delayChildren: 0.2,
-    },
-  },
-}
 
-const cardVariant = {
-  hidden: { 
-    opacity: 0, 
-    y: 50,
-    scale: 0.95,
-  },
-  show: { 
-    opacity: 1, 
-    y: 0,
-    scale: 1,
-    transition: { 
-      type: "spring",
-      stiffness: 80,
-      damping: 20,
-      duration: 0.6,
-    }
-  },
-  hover: {
-    y: -8,
-    scale: 1.02,
-    rotateY: 2,
-    transition: {
-      type: "spring",
-      stiffness: 400,
-      damping: 10
-    }
-  }
-}
 const ProjectSection = () => {
   const { isComponentLoading } = useLoading();
   const isLoading = isComponentLoading('projects');
@@ -105,6 +67,7 @@ const ProjectSection = () => {
   return (
     <section className="px-0">
       <motion.h2 
+        id="projects"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{
@@ -115,8 +78,8 @@ const ProjectSection = () => {
           duration: 1.2,
         }}
         viewport={{ once: true, amount: 0.3 }}
-        className="relative mt-4 mb-16 overflow-visible text-4xl font-extrabold tracking-tight text-center sm:text-5xl md:text-6xl" 
-        id="projects"
+        className="relative mt-4 mb-16 overflow-visible text-4xl font-extrabold tracking-tight text-center sm:text-5xl md:text-6xl scroll-navbar-offset" 
+       
       >
         <span className="block text-transparent bg-gradient-to-r from-purple-400 via-fuchsia-400 to-indigo-400 bg-clip-text drop-shadow-[0_4px_24px_rgba(168,85,247,0.4)]">
           My
@@ -129,25 +92,27 @@ const ProjectSection = () => {
         </span>
       </motion.h2>
       {/* Desktop Marquee */}
-      <div className="hidden w-full py-4 sm:block">
-        <Marquee
-          gradient={true}
-          gradientColor="rgb(88, 28, 135)"
-          gradientWidth={80}
-          speed={60}
-          pauseOnHover={true}
-          pauseOnClick={true}
-          loop={0}
-          className="overflow-hidden"
-        >
+      <div className="hidden w-full py-20 sm:block"  >
+        <div className="py-12 overflow-visible">
+          <Marquee
+            gradient={true}
+            gradientColor="rgb(88, 28, 135)"
+            gradientWidth={80}
+            speed={60}
+            pauseOnHover={true}
+            pauseOnClick={true}
+            loop={0}
+            className="!overflow-visible"
+            style={{ overflow: 'visible' }}
+          >
           {projectsData.map((project) => (
             <motion.div
               className="mx-6 w-[500px] md:w-[650px] flex-shrink-0"
               key={project.id}
               whileHover={{
-                scale: 1.05,
-                y: -10,
-                rotateY: 5,
+                scale: 1.015,
+                y: -3,
+                rotateY: 1,
                 transition: {
                   type: "spring",
                   stiffness: 300,
@@ -168,27 +133,23 @@ const ProjectSection = () => {
             </motion.div>
           ))}
         </Marquee>
+        </div>
       </div>
       {/* Mobile Stacked Cards */}
-      <motion.ul
-        className="flex flex-col items-center justify-center gap-7 sm:hidden"
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.2 }}
-      >
+      <div className="flex flex-col items-center justify-center gap-7 sm:hidden">
         {projectsData.map((project, idx) => (
-          <motion.li key={project.id} variants={cardVariant} className="w-[90vw] max-w-[430px]">
+          <div key={project.id} className="w-[90vw] max-w-[430px]">
             <ProjectCard
               title={project.title}
               description={project.description}
               imgUrl={project.image}
               gitUrl={project.gitUrl}
               previewUrl={project.previewUrl}
+              index={idx}
             />
-          </motion.li>
+          </div>
         ))}
-      </motion.ul>
+      </div>
     </section>
   )
 }

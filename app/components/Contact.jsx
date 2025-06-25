@@ -4,7 +4,7 @@ import Swal from "sweetalert2"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { MapPin, Phone, Mail, Instagram, Github, Linkedin, Send } from 'lucide-react'
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
 import { ContactSkeleton } from "./Skeleton";
 import { useLoading } from "../contexts/LoadingContext";
 

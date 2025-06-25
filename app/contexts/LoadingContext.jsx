@@ -24,15 +24,15 @@ export const LoadingProvider = ({ children }) => {
   // Simulate network conditions and device performance
   const getLoadingDuration = (component) => {
     const baseDurations = {
-      navbar: 800,
-      hero: 2000,
-      about: 1500,
-      projects: 1800,
-      contact: 1600,
+      navbar: 300,
+      hero: 800,
+      about: 600,
+      projects: 700,
+      contact: 500,
     };
 
-    // Add random variance to simulate real-world conditions
-    const variance = Math.random() * 500;
+    // Minimal variance for faster loading
+    const variance = Math.random() * 200;
     return baseDurations[component] + variance;
   };
 

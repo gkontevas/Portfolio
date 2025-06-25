@@ -94,36 +94,7 @@ const SplineModel = ({ onLoad, onError }) => {
             }
           `;
           document.head.appendChild(style);
-          
-          // Method 3: Check for any elements in the bottom-right corner
-          const containerBounds = containerRef.current?.getBoundingClientRect();
-          if (containerBounds) {
-            const elementsInBottomRight = document.elementsFromPoint(
-              containerBounds.right - 50, 
-              containerBounds.bottom - 30
-            );
-            elementsInBottomRight.forEach(el => {
-              if (el !== containerRef.current && !containerRef.current?.contains(el)) {
-                const text = el.textContent?.toLowerCase() || '';
-                if (text.includes('spline') || text.includes('design') || el.tagName === 'A') {
-                  el.style.display = 'none !important';
-                  el.remove();
-                }
-              }
-            });
-          }
         }, 1000);
-        
-        // Additional watermark check after longer delay
-        setTimeout(() => {
-          const allLinks = document.querySelectorAll('a');
-          allLinks.forEach(link => {
-            if (link.href?.includes('spline') || link.textContent?.toLowerCase().includes('spline')) {
-              link.style.display = 'none !important';
-              link.remove();
-            }
-          });
-        }, 3000);
         
         if (mounted) {
           setIsLoaded(true);
@@ -202,9 +173,9 @@ const SplineModel = ({ onLoad, onError }) => {
         }}
       />
       
-      {/* MAXIMUM WATERMARK DESTROYER - Enhanced with better coverage */}
+      {/* Enhanced watermark covering with cosmic effects */}
       <div className="absolute bottom-0 right-0 w-48 h-32 overflow-hidden">
-        {/* Base solid coverage - no transparency */}
+        {/* Base solid coverage */}
         <div 
           className="absolute inset-0"
           style={{
@@ -231,97 +202,12 @@ const SplineModel = ({ onLoad, onError }) => {
           }}
         />
         
-        {/* Extra thick coverage */}
+        {/* Extra coverage */}
         <div 
           className="absolute bottom-0 right-0 w-40 h-24"
           style={{
             background: 'rgba(0, 0, 0, 1)',
             borderRadius: '0 0 60% 0'
-          }}
-        />
-        
-        {/* Animated cosmic dust clouds */}
-        <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={`dust-${i}`}
-              className="absolute rounded-full opacity-95"
-              style={{
-                width: Math.random() * 12 + 6 + 'px',
-                height: Math.random() * 12 + 6 + 'px',
-                top: Math.random() * 100 + '%',
-                left: Math.random() * 100 + '%',
-                animationDelay: Math.random() * 6 + 's',
-                animationDuration: (Math.random() * 8 + 4) + 's',
-                background: `radial-gradient(circle, rgba(168, 85, 247, ${Math.random() * 1 + 0.6}) 0%, rgba(75, 0, 130, ${Math.random() * 1 + 0.5}) 70%, rgba(0, 0, 0, 1) 100%)`,
-                animation: 'cosmic-drift 8s ease-in-out infinite alternate',
-                filter: 'blur(0.5px)'
-              }}
-            />
-          ))}
-        </div>
-        
-        {/* Swirling cosmic energy */}
-        <div className="absolute inset-0">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={`energy-${i}`}
-              className="absolute"
-              style={{
-                width: Math.random() * 20 + 15 + 'px',
-                height: Math.random() * 20 + 15 + 'px',
-                top: Math.random() * 90 + 5 + '%',
-                left: Math.random() * 90 + 5 + '%',
-                borderRadius: '50%',
-                background: `conic-gradient(from ${Math.random() * 360}deg, 
-                  rgba(168, 85, 247, 0.8) 0deg, 
-                  rgba(75, 0, 130, 1) 120deg, 
-                  rgba(0, 0, 0, 1) 240deg, 
-                  rgba(168, 85, 247, 0.8) 360deg)`,
-                animation: `cosmic-whirl ${Math.random() * 10 + 8}s linear infinite`,
-                animationDelay: Math.random() * 5 + 's'
-              }}
-            />
-          ))}
-        </div>
-        
-        {/* Bright cosmic phenomena */}
-        <div className="absolute inset-0">
-          {[...Array(12)].map((_, i) => (
-            <div
-              key={`phenomena-${i}`}
-              className="absolute text-yellow-100 opacity-95"
-              style={{
-                top: Math.random() * 85 + 5 + '%',
-                left: Math.random() * 85 + 5 + '%',
-                fontSize: Math.random() * 16 + 12 + 'px',
-                animation: `cosmic-glow ${Math.random() * 6 + 3}s ease-in-out infinite alternate`,
-                animationDelay: Math.random() * 5 + 's',
-                filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))'
-              }}
-            >
-              {['⭐', '✨', '🌟', '💫', '🔆', '💥'][Math.floor(Math.random() * 6)]}
-            </div>
-          ))}
-        </div>
-        
-        {/* Master nebula overlay */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: `
-              conic-gradient(from 45deg at 80% 80%, 
-                rgba(0, 0, 0, 1) 0deg, 
-                rgba(75, 0, 130, 1) 60deg, 
-                rgba(168, 85, 247, 0.9) 120deg,
-                rgba(25, 25, 112, 1) 180deg, 
-                rgba(0, 0, 0, 1) 240deg,
-                rgba(75, 0, 130, 1) 300deg,
-                rgba(0, 0, 0, 1) 360deg
-              )
-            `,
-            animation: 'master-nebula 15s linear infinite',
-            borderRadius: '70% 0 70% 0'
           }}
         />
       </div>
@@ -335,70 +221,6 @@ const SplineModel = ({ onLoad, onError }) => {
           100% { 
             opacity: 1;
             transform: scale(1.05);
-          }
-        }
-        
-        @keyframes cosmic-drift {
-          0% { 
-            transform: translateY(0px) translateX(0px) scale(1) rotate(0deg);
-            opacity: 0.8;
-          }
-          50% { 
-            transform: translateY(-20px) translateX(-10px) scale(1.4) rotate(180deg);
-            opacity: 1;
-          }
-          100% { 
-            transform: translateY(0px) translateX(0px) scale(1) rotate(360deg);
-            opacity: 0.8;
-          }
-        }
-        
-        @keyframes cosmic-whirl {
-          0% { 
-            transform: rotate(0deg) scale(1);
-          }
-          50% { 
-            transform: rotate(180deg) scale(1.2);
-          }
-          100% { 
-            transform: rotate(360deg) scale(1);
-          }
-        }
-        
-        @keyframes master-nebula {
-          0% { 
-            transform: rotate(0deg) scale(1);
-            opacity: 0.95;
-          }
-          33% { 
-            transform: rotate(120deg) scale(1.1);
-            opacity: 1;
-          }
-          66% { 
-            transform: rotate(240deg) scale(0.95);
-            opacity: 0.98;
-          }
-          100% { 
-            transform: rotate(360deg) scale(1);
-            opacity: 0.95;
-          }
-        }
-        
-        @keyframes cosmic-glow {
-          0% { 
-            opacity: 0.6;
-            transform: scale(0.8) rotate(0deg);
-            filter: brightness(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
-          }
-          50% { 
-            opacity: 1;
-            transform: scale(1.5) rotate(180deg);
-            filter: brightness(1.8) drop-shadow(0 0 16px rgba(255, 255, 255, 1));
-          }
-          100% { 
-            opacity: 0.6;
-            transform: scale(0.8) rotate(360deg);
-            filter: brightness(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
           }
         }
       `}</style>

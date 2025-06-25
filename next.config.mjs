@@ -13,18 +13,38 @@ const nextConfig = {
   // Experimental features to help with build stability
   experimental: {
     optimizePackageImports: ['framer-motion', '@splinetool/runtime'],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
-  // Turbopack configuration (now stable)
-  turbopack: {
-    // Turbopack configuration equivalent to webpack config
-    resolveAlias: {},
-    resolveExtensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-  },
-  // Webpack configuration to handle potential file system issues
+  // Webpack configuration for faster compilation
   webpack: (config, { dev, isServer }) => {
-    if (dev && !isServer) {
-      config.cache = false;
+    if (dev) {
+      // Faster rebuilds in development
+      config.cache = {
+        type: 'filesystem',
+        buildDependencies: {
+          config: [__filename]
+        }
+      };
+      
+      // Optimize module resolution
+      config.resolve.symlinks = false;
+      
+      // Reduce bundle size for faster HMR
+      config.optimization = {
+        ...config.optimization,
+        removeAvailableModules: false,
+        removeEmptyChunks: false,
+        splitChunks: false,
+      };
     }
+    
     return config;
   },
 };

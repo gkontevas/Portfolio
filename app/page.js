@@ -17,10 +17,10 @@ export default function Home() {
   return (    <main className="relative flex flex-col w-full min-h-screen">
       <Navbar />
       <div className="flex-1 w-full mx-auto">
-        <div id="home" className="flex items-center justify-center w-full min-h-screen">
+        <div id="home" className="flex items-center justify-center w-full">
           <HeroSection />
         </div>
-        <div id="about" className="w-full py-12 sm:py-16 md:py-24">
+        <div id="about" className="w-full py-16 sm:py-20 md:py-24">
           <AboutSection />
         </div>
         <div id="projects" className="w-full py-12 sm:py-16 md:py-24">

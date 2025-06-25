@@ -69,9 +69,30 @@ const cardVariant = {
 const ProjectSection = () => {
   return (
     <section className="px-0">
-      <h2 className="mt-4 mb-10 text-4xl font-extrabold text-center text-slate-300" id="projects">
-        My small Projects!
-      </h2>
+      <motion.h2 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          type: 'spring',
+          stiffness: 60,
+          damping: 18,
+          delay: 0.2,
+          duration: 1.2,
+        }}
+        viewport={{ once: true, amount: 0.3 }}
+        className="relative mt-4 mb-16 text-4xl sm:text-5xl md:text-6xl font-extrabold text-center tracking-tight overflow-visible" 
+        id="projects"
+      >
+        <span className="block text-transparent bg-gradient-to-r from-purple-400 via-fuchsia-400 to-indigo-400 bg-clip-text drop-shadow-[0_4px_24px_rgba(168,85,247,0.4)]">
+          My
+        </span>
+        <span className="block text-transparent bg-gradient-to-r from-fuchsia-400 via-purple-500 to-indigo-500 bg-clip-text text-5xl sm:text-6xl md:text-7xl font-black tracking-wider drop-shadow-xl -mt-2">
+          Work
+        </span>
+        <span className="absolute font-black -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none left-1/2 top-1/2 opacity-15 blur-2xl text-6xl sm:text-7xl md:text-8xl text-fuchsia-400">
+          ⚡
+        </span>
+      </motion.h2>
       {}
       <div className="hidden w-full py-4 sm:block">
         <Marquee

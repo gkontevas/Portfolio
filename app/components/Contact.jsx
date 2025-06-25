@@ -100,12 +100,22 @@ const ContactForm = () => {
               <div className="absolute w-40 h-40 rounded-full -top-20 -right-20 bg-purple-900/20"></div>
               <div className="absolute w-40 h-40 rounded-full -bottom-20 -left-20 bg-purple-900/20"></div>
               <div className="relative z-10 flex flex-col h-full p-6 space-y-5 md:p-8 lg:p-10">
-                <motion.h2
-                  className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#9D4EDD] mb-4 text-center md:text-left"
+                <motion.div
+                  className="relative mb-6"
                   variants={itemVariants}
                 >
-                  Contact Me
-                </motion.h2>
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-center md:text-left tracking-tight">
+                    <span className="block text-transparent bg-gradient-to-r from-purple-400 via-fuchsia-400 to-indigo-400 bg-clip-text drop-shadow-[0_4px_24px_rgba(168,85,247,0.4)]">
+                      Contact
+                    </span>
+                    <span className="block text-transparent bg-gradient-to-r from-fuchsia-400 via-purple-500 to-indigo-500 bg-clip-text text-3xl sm:text-4xl lg:text-5xl font-black tracking-wider drop-shadow-xl -mt-1">
+                      Me
+                    </span>
+                    <span className="absolute font-black -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none left-1/2 top-1/2 opacity-15 blur-2xl text-4xl sm:text-5xl lg:text-6xl text-fuchsia-400">
+                      📧
+                    </span>
+                  </h2>
+                </motion.div>
                 <form onSubmit={onSubmit} className="flex flex-col flex-1 space-y-4 lg:space-y-6">
                   <div className="grid grid-cols-1 gap-4 px-2 sm:grid-cols-2 lg:gap-6 sm:px-0">
                     <motion.div variants={formItemVariants}>

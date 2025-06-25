@@ -9,14 +9,20 @@ const TAB_DATA = [
     title: "Skills",
     id: "skills",
     content: (
-      <ul className="list-none font-audiowide dot-list">
-        <li>React</li>
-        <li>Next.js</li>
-        <li>MongoDB</li>
-        <li>Javascript</li>
-        <li>Wordpress</li>
-        <li>HTML</li>
-        <li>CSS</li>
+      <ul className="list-none space-y-3">
+        {["React", "Next.js", "MongoDB", "Javascript", "Wordpress", "HTML", "CSS"].map((skill, index) => (
+          <motion.li 
+            key={skill}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-3 text-purple-200 font-medium"
+          >
+            <span className="w-2 h-2 bg-gradient-to-r from-purple-400 to-fuchsia-400 rounded-full"></span>
+            {skill}
+          </motion.li>
+        ))}
       </ul>
     ),
   },
@@ -24,13 +30,24 @@ const TAB_DATA = [
     title: "Education",
     id: "education",
     content: (
-      <ul className="list-none font-audiowide dot-list">
-        <li>On-going Studies at IEK EUROPROODOS.</li>
-        <li>On-going workshops, seminars, and online courses.</li>
-        <li>
-          Currently undertaking a 6-month legally authorized internship,
-          working collaboratively in a team of two Web Developers/Designers.
-        </li>
+      <ul className="list-none space-y-4">
+        {[
+          "On-going Studies at IEK EUROPROODOS.",
+          "On-going workshops, seminars, and online courses.",
+          "Currently undertaking a 6-month legally authorized internship, working collaboratively in a team of two Web Developers/Designers."
+        ].map((education, index) => (
+          <motion.li 
+            key={index}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+            viewport={{ once: true }}
+            className="flex items-start gap-3 text-purple-200 font-medium leading-relaxed"
+          >
+            <span className="w-2 h-2 bg-gradient-to-r from-purple-400 to-fuchsia-400 rounded-full mt-2 flex-shrink-0"></span>
+            {education}
+          </motion.li>
+        ))}
       </ul>
     ),
   },
@@ -38,9 +55,23 @@ const TAB_DATA = [
     title: "Certifications",
     id: "certifications",
     content: (
-      <ul className="list-none font-audiowide dot-list">
-        <li>E.C.D.L. Certificate</li>
-        <li>Senior High School Lykeio Lehaiou Certificate</li>
+      <ul className="list-none space-y-3">
+        {[
+          "E.C.D.L. Certificate",
+          "Senior High School Lykeio Lehaiou Certificate"
+        ].map((cert, index) => (
+          <motion.li 
+            key={cert}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-3 text-purple-200 font-medium"
+          >
+            <span className="w-2 h-2 bg-gradient-to-r from-purple-400 to-fuchsia-400 rounded-full"></span>
+            {cert}
+          </motion.li>
+        ))}
       </ul>
     ),
   },
@@ -148,16 +179,48 @@ const AboutSection = () => {
 
         {/* Text Content Column - takes 50% width on medium screens and up */}
         <div className="w-full text-center md:w-1/2">
-          <h2 className="mb-4 text-4xl font-bold text-purple-700 sm:text-5xl md:text-6xl tracking-tight">
-            About Me
-          </h2>
-          <p className="text-base lg:text-lg mb-2 mx-auto md:mx-0 max-w-[500px] md:max-w-none font-medium leading-relaxed">
+          <motion.h2 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{
+              type: 'spring',
+              stiffness: 60,
+              damping: 18,
+              delay: 0.2,
+              duration: 1.2,
+            }}
+            viewport={{ once: true, amount: 0.3 }}
+            className="relative mb-6 text-4xl sm:text-5xl md:text-6xl font-extrabold text-center md:text-left tracking-tight"
+          >
+            <span className="block text-transparent bg-gradient-to-r from-purple-400 via-fuchsia-400 to-indigo-400 bg-clip-text drop-shadow-[0_4px_24px_rgba(168,85,247,0.4)]">
+              About
+            </span>
+            <span className="block text-transparent bg-gradient-to-r from-fuchsia-400 via-purple-500 to-indigo-500 bg-clip-text text-5xl sm:text-6xl md:text-7xl font-black tracking-wider drop-shadow-xl -mt-2">
+              Me
+            </span>
+            <span className="absolute font-black -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none left-1/2 top-1/2 opacity-15 blur-2xl text-6xl sm:text-7xl md:text-8xl text-fuchsia-400">
+              ✨
+            </span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{
+              type: 'spring',
+              stiffness: 60,
+              damping: 18,
+              delay: 0.4,
+              duration: 1.2,
+            }}
+            viewport={{ once: true, amount: 0.3 }}
+            className="text-base lg:text-lg mb-6 mx-auto md:mx-0 max-w-[500px] md:max-w-none font-medium leading-relaxed text-purple-200/90 italic"
+          >
             I'm a 20-year-old aspiring developer with a big passion for coding
             and the world of technology. Trying to improve every day and get
             the best out of myself! Below you can check my education and skills.
             My main focus is JavaScript, mainly on libraries like React, NextJs
             etc. Eager to learn more and more!
-          </p>
+          </motion.p>
           <motion.div
             className="mx-auto md:mx-0 max-w-[500px] md:max-w-none mb-6"
             initial={{ scaleX: 0 }}

@@ -1,16 +1,51 @@
 import { motion, useInView } from "framer-motion";
 import dynamic from 'next/dynamic';
-import { useRef } from 'react';
+import { useRef, Suspense, useState } from 'react';
 
-const Spline = dynamic(
-  () => import('@splinetool/react-spline'),
-  { 
-    ssr: false,
-    loading: () => <div className="flex items-center justify-center w-full h-full rounded-lg bg-purple-900/20 animate-pulse">
-      <div className="text-purple-300">Loading 3D Scene...</div>
-    </div>
+const SplineComponent = ({ scene, className }) => {
+  const [hasError, setHasError] = useState(false);
+  
+  const Spline = dynamic(
+    () => import('@splinetool/react-spline').then((mod) => ({ default: mod.default })),
+    { 
+      ssr: false,
+      loading: () => <div className="flex items-center justify-center w-full h-full rounded-lg bg-purple-900/20 animate-pulse">
+        <div className="text-purple-300">Loading 3D Scene...</div>
+      </div>
+    }
+  );
+
+  if (hasError) {
+    return (
+      <div className="flex items-center justify-center w-full h-full border rounded-lg bg-gradient-to-br from-purple-900/30 to-fuchsia-900/30 border-purple-500/20">
+        <div className="text-center">
+          <div className="mb-4 text-6xl">🌟</div>
+          <div className="text-purple-300">3D Scene Unavailable</div>
+          <div className="mt-2 text-sm text-purple-400">Interactive experience loading...</div>
+        </div>
+      </div>
+    );
   }
-);
+
+  try {
+    return (
+      <Suspense fallback={
+        <div className="flex items-center justify-center w-full h-full rounded-lg bg-purple-900/20 animate-pulse">
+          <div className="text-purple-300">Loading 3D Scene...</div>
+        </div>
+      }>
+        <Spline
+          className={className}
+          scene={scene}
+          onError={() => setHasError(true)}
+        />
+      </Suspense>
+    );
+  } catch (error) {
+    setHasError(true);
+    return null;
+  }
+};
 const HeroSection = () => {
   const heroRef = useRef(null);
   const isInView = useInView(heroRef, { once: true, amount: 0.1 });
@@ -23,10 +58,10 @@ const HeroSection = () => {
         gap-y-0
         sm:gap-y-4
         min-h-auto
-        sm:min-h-screen
+        sm:min-h-[90vh]
         justify-center
-        sm:justify-between        xl:flex-row xl:px-24 xl:h-screen
-        pt-2 pb-0 sm:pt-8 md:pt-12 sm:pb-0
+        sm:justify-between        xl:flex-row xl:px-24 xl:h-[90vh]
+        pt-32 pb-8 sm:pt-36 md:pt-40 sm:pb-12
       `}
     >
       <div
@@ -90,7 +125,7 @@ const HeroSection = () => {
             min-h-[300px] sm:min-h-[400px] md:min-h-[500px]
           "
         >
-          <Spline
+          <SplineComponent
             className="!absolute !inset-0"
             scene="https://prod.spline.design/f3Tb9mT378GDmn0P/scene.splinecode"
           />

@@ -92,6 +92,9 @@ const AboutSection = () => {
   const [isPending, startTransition] = useTransition();
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showMobileToast, setShowMobileToast] = useState(false);
+  const [toastDismissed, setToastDismissed] = useState(false);
   const { isComponentLoading } = useLoading();
   const isLoading = isComponentLoading('about');
 
@@ -123,15 +126,17 @@ const AboutSection = () => {
         document.head.appendChild(style);
       }
       
-      // Add scroll prevention ONLY to canvas elements within the About section
-      const aboutSection = document.getElementById('about');
-      if (aboutSection) {
-        const aboutCanvases = aboutSection.querySelectorAll('canvas');
-        aboutCanvases.forEach(canvas => {
-          canvas.addEventListener('wheel', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
-          canvas.addEventListener('touchmove', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
-          canvas.style.touchAction = 'none';
-        });
+      // Add scroll prevention ONLY on mobile devices
+      if (isMobile) {
+        const aboutSection = document.getElementById('about');
+        if (aboutSection) {
+          const aboutCanvases = aboutSection.querySelectorAll('canvas');
+          aboutCanvases.forEach(canvas => {
+            canvas.addEventListener('wheel', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+            canvas.style.touchAction = 'none';
+          });
+        }
       }
     }, 1000);
   };
@@ -150,6 +155,40 @@ const AboutSection = () => {
     link.rel = "stylesheet";
     document.head.appendChild(link);
   }, []);
+
+  // Check for mobile device and show toast
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      setIsMobile(mobile);
+      
+      // Show toast for mobile users with a delay (only if not previously dismissed)
+      if (mobile && !showMobileToast && !toastDismissed) {
+        const timer = setTimeout(() => {
+          setShowMobileToast(true);
+        }, 2000); // Show after 2 seconds
+        
+        return () => clearTimeout(timer);
+      }
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [showMobileToast, toastDismissed]);
+
+  // Auto-dismiss toast after 8 seconds
+  useEffect(() => {
+    if (showMobileToast && isMobile) {
+      const timer = setTimeout(() => {
+        setShowMobileToast(false);
+        setToastDismissed(true);
+      }, 8000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [showMobileToast, isMobile]);
 
   // ============================================================================
   // LOADING STATE
@@ -192,47 +231,110 @@ const AboutSection = () => {
               <motion.div className="absolute inset-0 rounded-full" animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} style={{ background: 'radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(75, 0, 130, 0.1) 50%, transparent 70%)', filter: 'blur(2px)' }} />
               
               {/* 3D Model Container */}
-              <div className="absolute overflow-hidden rounded-full inset-4 bg-black/20" onWheel={(e) => { e.preventDefault(); e.stopPropagation(); }} onTouchMove={(e) => { e.preventDefault(); e.stopPropagation(); }} style={{ touchAction: 'none' }}>
+              <div className="absolute overflow-hidden rounded-full inset-4 bg-black/20" 
+                   onWheel={isMobile ? (e) => { e.preventDefault(); e.stopPropagation(); } : undefined} 
+                   onTouchMove={isMobile ? (e) => { e.preventDefault(); e.stopPropagation(); } : undefined} 
+                   style={{ touchAction: isMobile ? 'none' : 'auto' }}>
                 <div className="relative w-full h-full">
-                  {/* Loading State */}
-                  {!splineLoaded && !splineError && (
-                    <div className="absolute inset-0 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-900/40 to-indigo-900/40">
-                      <div className="text-center">
-                        <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} className="w-16 h-16 mx-auto mb-4 border-4 border-purple-400 rounded-full border-t-transparent" />
-                        <p className="font-medium text-purple-200">Loading Galaxy...</p>
+                  {/* Mobile Optimized Experience with about-image.webp */}
+                  {isMobile ? (
+                    <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-slate-900/60 to-purple-900/40">
+                      {/* Background glow effect */}
+                      <div 
+                        className="absolute inset-0 rounded-full opacity-40"
+                        style={{
+                          background: 'radial-gradient(circle at center, rgba(168, 85, 247, 0.3) 0%, transparent 70%)',
+                          animation: 'pulse 4s ease-in-out infinite'
+                        }}
+                      />
+                      
+                      {/* Main hero image - perfectly centered and fitted */}
+                      <div className="relative w-full h-full overflow-hidden rounded-full">
+                        <Image
+                          src="/images/about-image.webp"
+                          alt="About Me - Mobile Optimized"
+                          fill
+                          className="object-cover"
+                          style={{
+                            filter: 'brightness(1.1) contrast(1.05)'
+                          }}
+                          priority
+                        />
+                        
+                        {/* Overlay gradient for better contrast */}
+                        <div 
+                          className="absolute inset-0 rounded-full"
+                          style={{
+                            background: 'radial-gradient(circle at center, transparent 60%, rgba(75, 0, 130, 0.3) 100%)',
+                            boxShadow: '0 0 60px rgba(168, 85, 247, 0.4), 0 0 120px rgba(168, 85, 247, 0.2)'
+                          }}
+                        />
+                        
+                        {/* Subtle floating particles */}
+                        {[...Array(4)].map((_, i) => {
+                          const angle = (i * 90) * (Math.PI / 180);
+                          const radius = 65;
+                          const x = 50 + Math.cos(angle) * radius;
+                          const y = 50 + Math.sin(angle) * radius;
+                          
+                          return (
+                            <div
+                              key={`particle-${i}`}
+                              className="absolute z-10 w-1 h-1 rounded-full opacity-60"
+                              style={{
+                                top: `${y}%`,
+                                left: `${x}%`,
+                                transform: 'translate(-50%, -50%)',
+                                background: 'rgba(168, 85, 247, 0.7)',
+                                boxShadow: '0 0 8px rgba(168, 85, 247, 0.5)',
+                                animation: `float 6s ease-in-out infinite ${i * 1.5}s`
+                              }}
+                            />
+                          );
+                        })}
                       </div>
                     </div>
-                  )}
-                  
-                  {/* Error State */}
-                  {splineError && (
-                    <div className="absolute inset-0 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-900/40 to-indigo-900/40">
-                      <div className="text-center">
-                        <div className="mb-4 text-6xl">🌌</div>
-                        <p className="font-medium text-purple-200">Galaxy Experience</p>
-                        <p className="mt-2 text-sm text-purple-300">Interactive 3D content</p>
+                  ) : (
+                    <>
+                      {/* Loading State */}
+                      {!splineLoaded && !splineError && (
+                        <div className="absolute inset-0 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-900/40 to-indigo-900/40">
+                          <div className="text-center">
+                            <motion.div animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} className="w-16 h-16 mx-auto mb-4 border-4 border-purple-400 rounded-full border-t-transparent" />
+                            <p className="font-medium text-purple-200">Loading Galaxy...</p>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Error State */}
+                      {splineError && (
+                        <div className="absolute inset-0 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-900/40 to-indigo-900/40">
+                          <div className="text-center">
+                            <div className="mb-4 text-6xl">🌌</div>
+                            <p className="font-medium text-purple-200">Galaxy Experience</p>
+                            <p className="mt-2 text-sm text-purple-300">Interactive 3D content</p>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Spline 3D Model - Desktop Only with Interactions */}
+                      <div className="absolute inset-0 overflow-hidden rounded-full">
+                        <Spline
+                          scene="https://prod.spline.design/RJM68j1HsSWaPCIS/scene.splinecode"
+                          onLoad={handleSplineLoad}
+                          onError={handleSplineError}
+                          style={{
+                            width: '150%', height: '150%', position: 'absolute', 
+                            top: '50%', left: '50%', 
+                            transform: 'translate(-52%, -50%) scale(1.2)',
+                            borderRadius: '50%', opacity: splineLoaded ? 1 : 0, 
+                            transition: 'opacity 0.5s ease-in-out',
+                            pointerEvents: 'auto' // Enable interactions on desktop
+                          }}
+                        />
                       </div>
-                    </div>
+                    </>
                   )}
-                  
-                  {/* Spline 3D Model */}
-                  <div className="absolute inset-0 overflow-hidden rounded-full">
-                    <Spline
-                      scene="https://prod.spline.design/RJM68j1HsSWaPCIS/scene.splinecode"
-                      onLoad={handleSplineLoad}
-                      onError={handleSplineError}
-                      onWheel={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                      onTouchMove={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                      style={{
-                        width: '150%', height: '150%', position: 'absolute', 
-                        top: '50%', left: '50%', 
-                        transform: 'translate(-52%, -50%) scale(1.2)',
-                        borderRadius: '50%', opacity: splineLoaded ? 1 : 0, 
-                        transition: 'opacity 0.5s ease-in-out',
-                        pointerEvents: 'auto'
-                      }}
-                    />
-                  </div>
                 </div>
               </div>
             </motion.div>
@@ -285,6 +387,88 @@ const AboutSection = () => {
           </div>
         </div>
       </div>
+      
+      {/* Centered Toast Notification for Mobile Users */}
+      {isMobile && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showMobileToast ? 1 : 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className={`fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none ${
+            showMobileToast ? '' : 'pointer-events-none'
+          }`}
+          style={{ 
+            backdropFilter: showMobileToast ? 'blur(2px)' : 'none',
+            backgroundColor: showMobileToast ? 'rgba(0, 0, 0, 0.2)' : 'transparent'
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ 
+              opacity: showMobileToast ? 1 : 0, 
+              scale: showMobileToast ? 1 : 0.9,
+              y: showMobileToast ? 0 : 20
+            }}
+            transition={{ 
+              type: "spring", 
+              damping: 25, 
+              stiffness: 300,
+              duration: 0.3
+            }}
+            className="relative max-w-sm mx-auto pointer-events-auto"
+          >
+            <div className="relative p-5 border shadow-xl bg-slate-900/95 backdrop-blur-lg rounded-xl border-slate-700/50">
+              {/* Content */}
+              <div className="relative">
+                <div className="flex items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="mb-1 text-base font-semibold text-white">
+                      Better on Desktop
+                    </h3>
+                    <p className="text-sm leading-relaxed text-slate-300">
+                      Experience the full interactive portfolio on a larger screen.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setShowMobileToast(false);
+                      setToastDismissed(true);
+                    }}
+                    className="flex-shrink-0 p-1.5 transition-all duration-200 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 active:scale-95"
+                    aria-label="Close notification"
+                  >
+                    <svg 
+                      width="14" 
+                      height="14" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+                
+                {/* Progress bar */}
+                <div className="mt-3">
+                  <div className="w-full h-0.5 rounded-full bg-slate-700">
+                    <motion.div
+                      initial={{ width: "100%" }}
+                      animate={{ width: showMobileToast ? "0%" : "100%" }}
+                      transition={{ duration: 8, ease: "linear" }}
+                      className="h-full rounded-full bg-gradient-to-r from-purple-400 to-fuchsia-400"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </section>
   );
 };

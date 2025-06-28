@@ -1,11 +1,26 @@
 "use client";
-import React, { useTransition, useState, useEffect } from "react";
+import React, { useTransition, useState } from "react";
 import Image from "next/image";
 import TabButton from "./TabButton";
 import { motion } from "framer-motion";
 import { AboutSkeleton } from "./Skeleton";
 import { useLoading } from "../contexts/LoadingContext";
 import Spline from '@splinetool/react-spline';
+import { useIsMobileOrSlow } from "../hooks/useIsMobileOrSlow";
+
+// Animation configs
+const ANIMATION_CONFIG = {
+  tab: {
+    initial: { opacity: 0, x: -20 },
+    animate: { opacity: 1, x: 0 },
+    transition: (index) => ({ delay: index * 0.1, duration: 0.5 }),
+  },
+  section: (isMobile) => ({
+    initial: { opacity: 0, y: isMobile ? 0 : 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: isMobile ? 0.3 : 0.7, ease: "easeOut" },
+  }),
+};
 
 // ============================================================================
 // TAB DATA CONFIGURATION
@@ -19,9 +34,8 @@ const TAB_DATA = [
         {["React", "Next.js", "MongoDB", "Javascript", "Wordpress", "HTML", "CSS"].map((skill, index) => (
           <motion.li 
             key={skill}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
+            {...ANIMATION_CONFIG.tab}
+            transition={ANIMATION_CONFIG.tab.transition(index)}
             viewport={{ once: true }}
             className="flex items-center gap-3 font-medium text-purple-200"
           >
@@ -44,9 +58,8 @@ const TAB_DATA = [
         ].map((education, index) => (
           <motion.li 
             key={index}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
+            {...ANIMATION_CONFIG.tab}
+            transition={ANIMATION_CONFIG.tab.transition(index)}
             viewport={{ once: true }}
             className="flex items-start gap-3 font-medium leading-relaxed text-purple-200"
           >
@@ -65,9 +78,8 @@ const TAB_DATA = [
         {["E.C.D.L. Certificate", "Senior High School Lykeio Lehaiou Certificate"].map((cert, index) => (
           <motion.li 
             key={cert}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
+            {...ANIMATION_CONFIG.tab}
+            transition={ANIMATION_CONFIG.tab.transition(index)}
             viewport={{ once: true }}
             className="flex items-center gap-3 font-medium text-purple-200"
           >
@@ -92,125 +104,33 @@ const AboutSection = () => {
   const [isPending, startTransition] = useTransition();
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [splineError, setSplineError] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [showMobileToast, setShowMobileToast] = useState(false);
   const [toastDismissed, setToastDismissed] = useState(false);
   const { isComponentLoading } = useLoading();
   const isLoading = isComponentLoading('about');
+  const [isMobile, hasCheckedDevice] = useIsMobileOrSlow();
 
-  // ============================================================================
-  // EVENT HANDLERS
-  // ============================================================================
-  const handleTabChange = (id) => setTab(id);
-
-  const handleSplineLoad = () => {
-    setSplineLoaded(true);
-    setSplineError(false);
-    
-    setTimeout(() => {
-      // Remove watermark elements
-      const watermarks = document.querySelectorAll('a[href*="spline"], [class*="watermark"], [id*="watermark"]');
-      watermarks.forEach(el => el.remove());
-      
-      // Hide bottom-right positioned elements
-      const splineContainer = document.querySelector('[data-spline-container]');
-      if (splineContainer) {
-        const style = document.createElement('style');
-        style.innerHTML = `
-          [data-spline-container] a,
-          [data-spline-container] [style*="position: absolute"][style*="bottom"],
-          [data-spline-container] [style*="position: fixed"][style*="bottom"] {
-            display: none !important;
-          }
-        `;
-        document.head.appendChild(style);
-      }
-      
-      // Handle scroll interactions based on device
-      const aboutSection = document.getElementById('about');
-      if (aboutSection) {
-        const aboutCanvases = aboutSection.querySelectorAll('canvas');
-        aboutCanvases.forEach(canvas => {
-          if (isMobile) {
-            // Mobile: Disable ALL interactions
-            canvas.addEventListener('wheel', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
-            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
-            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
-            canvas.addEventListener('touchend', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
-            canvas.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
-            canvas.addEventListener('pointermove', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
-            canvas.addEventListener('pointerup', (e) => { e.preventDefault(); e.stopPropagation(); }, { passive: false });
-            canvas.style.touchAction = 'none';
-            canvas.style.pointerEvents = 'none';
-          } else {
-            // Desktop: Allow 3D interactions but prevent page scrolling
-            canvas.addEventListener('wheel', (e) => { 
-              e.preventDefault(); 
-              e.stopPropagation(); 
-            }, { passive: false });
-            
-            // Allow mouse interactions for 3D model manipulation
-            canvas.style.touchAction = 'auto';
-            canvas.style.pointerEvents = 'auto';
-          }
-        });
-      }
-    }, 1000);
-  };
-
-  const handleSplineError = () => {
-    setSplineError(true);
-    setSplineLoaded(false);
-  };
-
-  // ============================================================================
-  // EFFECTS
-  // ============================================================================
-  useEffect(() => {
-    const link = document.createElement("link");
-    link.href = "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap";
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-  }, []);
-
-  // Check for mobile device and show toast
-  useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      setIsMobile(mobile);
-      
-      // Show toast for mobile users with a delay (only if not previously dismissed)
-      if (mobile && !showMobileToast && !toastDismissed) {
-        const timer = setTimeout(() => {
-          setShowMobileToast(true);
-        }, 2000); // Show after 2 seconds
-        
-        return () => clearTimeout(timer);
-      }
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, [showMobileToast, toastDismissed]);
+  // Show mobile toast only once per session
+  React.useEffect(() => {
+    if (isMobile && !toastDismissed && !sessionStorage.getItem('aboutMobileToastShown')) {
+      setShowMobileToast(true);
+      sessionStorage.setItem('aboutMobileToastShown', '1');
+    }
+  }, [isMobile, toastDismissed]);
 
   // Auto-dismiss toast after 8 seconds
-  useEffect(() => {
+  React.useEffect(() => {
     if (showMobileToast && isMobile) {
       const timer = setTimeout(() => {
         setShowMobileToast(false);
         setToastDismissed(true);
       }, 8000);
-      
       return () => clearTimeout(timer);
     }
   }, [showMobileToast, isMobile]);
 
-  // ============================================================================
   // LOADING STATE
-  // ============================================================================
-  if (isLoading) {
+  if (isLoading || !hasCheckedDevice) {
     return (
       <section className="text-white" id="about" style={{ fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
         <div className="max-w-6xl px-4 pt-4 pb-8 mx-auto sm:pt-8 sm:pb-12">
@@ -225,17 +145,16 @@ const AboutSection = () => {
   // ============================================================================
 
   return (
-    <section className="text-white" id="about" style={{ fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+    <section className="text-white" id="about" aria-label="About Me" style={{ fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       <div className="flex flex-col items-center max-w-6xl gap-8 px-4 pt-4 pb-8 mx-auto md:items-start md:flex-row sm:pt-8 sm:pb-12 xl:gap-12">
-        
         {/* ========== 3D GALAXY PORTAL COLUMN ========== */}
-        <motion.div className="flex justify-center w-full md:w-1/2" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: "easeOut" }}>
+        <motion.div {...ANIMATION_CONFIG.section(isMobile)} className="flex justify-center w-full md:w-1/2">
           <div className="relative w-[350px] h-[350px] sm:w-[400px] sm:h-[400px] md:w-[450px] md:h-[450px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] aspect-square">
             <motion.div
               className="relative w-full h-full overflow-hidden rounded-full"
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: isMobile ? 1 : 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
+              transition={{ duration: isMobile ? 0.5 : 1, ease: "easeOut" }}
               style={{
                 background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.1) 0%, rgba(75, 0, 130, 0.2) 50%, rgba(25, 25, 112, 0.1) 100%)',
                 boxShadow: '0 0 50px rgba(138, 43, 226, 0.3), inset 0 0 50px rgba(75, 0, 130, 0.2)',
@@ -243,20 +162,12 @@ const AboutSection = () => {
               }}
             >
               {/* Portal Border Animations */}
-              <motion.div className="absolute inset-0 rounded-full" animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} style={{ background: 'conic-gradient(from 0deg, transparent, rgba(138, 43, 226, 0.4), transparent, rgba(75, 0, 130, 0.4), transparent)', mask: 'radial-gradient(circle, transparent 95%, black 98%)', WebkitMask: 'radial-gradient(circle, transparent 95%, black 98%)' }} />
-              <motion.div className="absolute rounded-full inset-1" animate={{ rotate: -360 }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }} style={{ background: 'conic-gradient(from 180deg, transparent, rgba(168, 85, 247, 0.6), transparent, rgba(139, 69, 19, 0.4), transparent)', mask: 'radial-gradient(circle, transparent 92%, black 95%)', WebkitMask: 'radial-gradient(circle, transparent 92%, black 95%)' }} />
-              <motion.div className="absolute inset-0 rounded-full" animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} style={{ background: 'radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(75, 0, 130, 0.1) 50%, transparent 70%)', filter: 'blur(2px)' }} />
+              <motion.div className="absolute inset-0 rounded-full" animate={isMobile ? undefined : { rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} style={{ background: 'conic-gradient(from 0deg, transparent, rgba(138, 43, 226, 0.4), transparent, rgba(75, 0, 130, 0.4), transparent)', mask: 'radial-gradient(circle, transparent 95%, black 98%)', WebkitMask: 'radial-gradient(circle, transparent 95%, black 98%)' }} />
+              <motion.div className="absolute rounded-full inset-1" animate={isMobile ? undefined : { rotate: -360 }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }} style={{ background: 'conic-gradient(from 180deg, transparent, rgba(168, 85, 247, 0.6), transparent, rgba(139, 69, 19, 0.4), transparent)', mask: 'radial-gradient(circle, transparent 92%, black 95%)', WebkitMask: 'radial-gradient(circle, transparent 92%, black 95%)' }} />
+              <motion.div className="absolute inset-0 rounded-full" animate={isMobile ? undefined : { scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} style={{ background: 'radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(75, 0, 130, 0.1) 50%, transparent 70%)', filter: 'blur(2px)' }} />
               
               {/* 3D Model Container */}
-              <div className="absolute overflow-hidden rounded-full inset-4 bg-black/20" 
-                   onWheel={isMobile ? (e) => { e.preventDefault(); e.stopPropagation(); } : (e) => { e.preventDefault(); e.stopPropagation(); }} 
-                   onTouchMove={isMobile ? (e) => { e.preventDefault(); e.stopPropagation(); } : undefined} 
-                   onTouchStart={isMobile ? (e) => { e.preventDefault(); e.stopPropagation(); } : undefined}
-                   onPointerDown={isMobile ? (e) => { e.preventDefault(); e.stopPropagation(); } : undefined}
-                   style={{ 
-                     touchAction: isMobile ? 'none' : 'auto',
-                     pointerEvents: isMobile ? 'none' : 'auto'
-                   }}>
+              <div className="absolute overflow-hidden rounded-full inset-4 bg-black/20">
                 <div className="relative w-full h-full">
                   {/* Mobile Optimized Experience with about-image.webp */}
                   {isMobile ? (
@@ -277,10 +188,10 @@ const AboutSection = () => {
                           alt="About Me - Mobile Optimized"
                           fill
                           className="object-cover"
-                          style={{
-                            filter: 'brightness(1.1) contrast(1.05)'
-                          }}
+                          style={{ filter: 'brightness(1.1) contrast(1.05)' }}
                           priority
+                          loading="eager"
+                          aria-label="About Me Photo"
                         />
                         
                         {/* Overlay gradient for better contrast */}
@@ -340,21 +251,24 @@ const AboutSection = () => {
                       )}
                       
                       {/* Spline 3D Model - Desktop Only with Interactions */}
-                      <div className="absolute inset-0 overflow-hidden rounded-full">
-                        <Spline
-                          scene="https://prod.spline.design/RJM68j1HsSWaPCIS/scene.splinecode"
-                          onLoad={handleSplineLoad}
-                          onError={handleSplineError}
-                          style={{
-                            width: '150%', height: '150%', position: 'absolute', 
-                            top: '50%', left: '50%', 
-                            transform: 'translate(-52%, -50%) scale(1.2)',
-                            borderRadius: '50%', opacity: splineLoaded ? 1 : 0, 
-                            transition: 'opacity 0.5s ease-in-out',
-                            pointerEvents: 'auto' // Enable full interactions on desktop
-                          }}
-                        />
-                      </div>
+                      {!isMobile && (
+                        <div className="absolute inset-0 overflow-hidden rounded-full">
+                          <Spline
+                            scene="https://prod.spline.design/RJM68j1HsSWaPCIS/scene.splinecode"
+                            onLoad={() => { setSplineLoaded(true); setSplineError(false); }}
+                            onError={() => { setSplineError(true); setSplineLoaded(false); }}
+                            style={{
+                              width: '150%', height: '150%', position: 'absolute', 
+                              top: '50%', left: '50%', 
+                              transform: 'translate(-52%, -50%) scale(1.2)',
+                              borderRadius: '50%', opacity: splineLoaded ? 1 : 0, 
+                              transition: 'opacity 0.5s ease-in-out',
+                              pointerEvents: 'auto'
+                            }}
+                            aria-label="3D Galaxy Model"
+                          />
+                        </div>
+                      )}
                     </>
                   )}
                 </div>
@@ -395,7 +309,7 @@ const AboutSection = () => {
           {/* Tab Buttons */}
           <div className="flex flex-col flex-wrap justify-center w-full max-w-xs gap-2 mx-auto mb-8 md:flex-row md:gap-4 md:max-w-none md:w-auto">
             {TAB_DATA.map(({ id, title }) => (
-              <TabButton key={id} selectTab={() => handleTabChange(id)} active={tab === id} className="w-full px-4 py-2 text-base md:w-auto md:text-lg">
+              <TabButton key={id} selectTab={() => setTab(id)} active={tab === id} className="w-full px-4 py-2 text-base md:w-auto md:text-lg">
                 {title}
               </TabButton>
             ))}
@@ -416,13 +330,12 @@ const AboutSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: showMobileToast ? 1 : 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className={`fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none ${
-            showMobileToast ? '' : 'pointer-events-none'
-          }`}
+          className={`fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none ${showMobileToast ? '' : 'pointer-events-none'}`}
           style={{ 
             backdropFilter: showMobileToast ? 'blur(2px)' : 'none',
             backgroundColor: showMobileToast ? 'rgba(0, 0, 0, 0.2)' : 'transparent'
           }}
+          aria-live="polite"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}

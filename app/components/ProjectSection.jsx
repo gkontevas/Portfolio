@@ -1,9 +1,19 @@
 "use client"
+import { motion } from "framer-motion"
 import ProjectCard from "./ProjectCard"
 import Marquee from "react-fast-marquee"
-import { motion } from "framer-motion"
 import { ProjectsSkeleton } from "./Skeleton"
 import { useLoading } from "../contexts/LoadingContext"
+import { useIsMobileOrSlow } from "../hooks/useIsMobileOrSlow"
+
+const ANIMATION_CONFIG = {
+  section: (isMobile) => ({
+    initial: { opacity: 0, y: isMobile ? 0 : 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: isMobile ? 0.3 : 0.7, ease: "easeOut" },
+  }),
+}
+
 const projectsData = [
   {
     id: 1,
@@ -59,27 +69,19 @@ const projectsData = [
 const ProjectSection = () => {
   const { isComponentLoading } = useLoading();
   const isLoading = isComponentLoading('projects');
+  const [isMobileOrSlow, hasCheckedDevice] = useIsMobileOrSlow();
 
-  if (isLoading) {
+  if (isLoading || !hasCheckedDevice) {
     return <ProjectsSkeleton />;
   }
 
   return (
-    <section className="px-0">
+    <section className="px-0" aria-label="Projects">
       <motion.h2 
         id="projects"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{
-          type: 'spring',
-          stiffness: 60,
-          damping: 18,
-          delay: 0.2,
-          duration: 1.2,
-        }}
+        {...ANIMATION_CONFIG.section(isMobileOrSlow)}
         viewport={{ once: true, amount: 0.3 }}
         className="relative mt-4 mb-16 overflow-visible text-4xl font-extrabold tracking-tight text-center sm:text-5xl md:text-6xl scroll-navbar-offset" 
-       
       >
         <span className="block text-transparent bg-gradient-to-r from-purple-400 via-fuchsia-400 to-indigo-400 bg-clip-text drop-shadow-[0_4px_24px_rgba(168,85,247,0.4)]">
           My
@@ -95,10 +97,10 @@ const ProjectSection = () => {
       <div className="hidden w-full py-20 sm:block"  >
         <div className="py-12 overflow-visible">
           <Marquee
-            gradient={true}
+            gradient={!isMobileOrSlow}
             gradientColor="rgb(88, 28, 135)"
             gradientWidth={80}
-            speed={60}
+            speed={isMobileOrSlow ? 30 : 60}
             pauseOnHover={true}
             pauseOnClick={true}
             loop={0}
@@ -109,7 +111,7 @@ const ProjectSection = () => {
             <motion.div
               className="mx-6 w-[500px] md:w-[650px] flex-shrink-0"
               key={project.id}
-              whileHover={{
+              whileHover={isMobileOrSlow ? undefined : {
                 scale: 1.015,
                 y: -3,
                 rotateY: 1,
@@ -119,7 +121,7 @@ const ProjectSection = () => {
                   damping: 20
                 }
               }}
-              whileTap={{ scale: 0.98 }}
+              whileTap={isMobileOrSlow ? undefined : { scale: 0.98 }}
               initial={{ opacity: 0.8 }}
               whileInView={{ opacity: 1 }}
             >
@@ -129,6 +131,7 @@ const ProjectSection = () => {
                 imgUrl={project.image}
                 gitUrl={project.gitUrl}
                 previewUrl={project.previewUrl}
+                isMobileOrSlow={isMobileOrSlow}
               />
             </motion.div>
           ))}
@@ -146,6 +149,7 @@ const ProjectSection = () => {
               gitUrl={project.gitUrl}
               previewUrl={project.previewUrl}
               index={idx}
+              isMobileOrSlow={isMobileOrSlow}
             />
           </div>
         ))}

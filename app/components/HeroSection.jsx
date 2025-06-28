@@ -2,8 +2,17 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from 'react';
 import { HeroSkeleton } from "./Skeleton";
 import { useLoading } from "../contexts/LoadingContext";
+import { useIsMobileOrSlow } from "../hooks/useIsMobileOrSlow";
 
-const SplineComponent = ({ scene, className }) => {
+const ANIMATION_CONFIG = {
+  section: (isMobile) => ({
+    initial: { opacity: 0, y: isMobile ? 0 : 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: isMobile ? 0.3 : 0.7, ease: "easeOut" },
+  }),
+};
+
+const SplineComponent = ({ scene, className, disableSpline }) => {
   const [mounted, setMounted] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [error, setError] = useState(false);
@@ -14,25 +23,16 @@ const SplineComponent = ({ scene, className }) => {
   }, []);
 
   useEffect(() => {
-    if (!mounted || !containerRef.current) return;
-
+    if (!mounted || !containerRef.current || disableSpline) return;
     let splineApp = null;
-
     const loadSpline = async () => {
       try {
-        console.log('Loading Spline...');
         const { Application } = await import('@splinetool/runtime');
-        
         if (!containerRef.current) return;
-        
         splineApp = new Application(containerRef.current);
-        
         splineApp.load(scene)
           .then(() => {
-            console.log('✅ Spline scene loaded successfully');
             setSplineLoaded(true);
-            
-            // Completely disable all interactions
             const canvas = containerRef.current?.querySelector('canvas');
             if (canvas) {
               canvas.style.pointerEvents = 'none';
@@ -41,27 +41,21 @@ const SplineComponent = ({ scene, className }) => {
             }
           })
           .catch((error) => {
-            console.error('❌ Failed to load Spline scene:', error);
             setError(true);
           });
       } catch (importError) {
-        console.error('❌ Failed to import Spline runtime:', importError);
         setError(true);
       }
     };
-
     loadSpline();
-
     return () => {
       if (splineApp) {
         try {
           splineApp.dispose();
-        } catch (e) {
-          console.warn('Error disposing Spline app:', e);
-        }
+        } catch (e) {}
       }
     };
-  }, [mounted, scene]);
+  }, [mounted, scene, disableSpline]);
 
   if (!mounted) {
     return (
@@ -72,7 +66,6 @@ const SplineComponent = ({ scene, className }) => {
       </div>
     );
   }
-
   if (error) {
     return (
       <div className="flex items-center justify-center w-full h-full border rounded-lg bg-gradient-to-br from-purple-900/30 to-fuchsia-900/30 border-purple-500/20">
@@ -84,7 +77,6 @@ const SplineComponent = ({ scene, className }) => {
       </div>
     );
   }
-
   return (
     <div 
       className={className} 
@@ -116,19 +108,27 @@ const SplineComponent = ({ scene, className }) => {
     </div>
   );
 };
+
 const HeroSection = () => {
   const heroRef = useRef(null);
   const isInView = useInView(heroRef, { once: true, amount: 0.1 });
   const { isComponentLoading } = useLoading();
   const isLoading = isComponentLoading('hero');
+  const [disableSpline, setDisableSpline] = useState(false);
+  const [isMobileOrSlow, hasCheckedDevice] = useIsMobileOrSlow();
 
-  if (isLoading) {
+  useEffect(() => {
+    setDisableSpline(isMobileOrSlow);
+  }, [isMobileOrSlow]);
+
+  if (isLoading || !hasCheckedDevice) {
     return <HeroSkeleton />;
   }
 
   return (
     <section
       ref={heroRef}
+      aria-label="Hero"
       className={`
         relative flex flex-col-reverse items-center w-full        px-4 overflow-visible
         gap-y-0
@@ -185,15 +185,7 @@ const HeroSection = () => {
       </div>
       <div className="items-center justify-center hidden w-full sm:flex xl:w-1/2 xl:h-full">
         <motion.div
-          initial={{ opacity: 0, y: 80 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            type: 'spring',
-            stiffness: 40,
-            damping: 25,
-            delay: 0.6,
-            duration: 1.5,
-          }}
+          {...ANIMATION_CONFIG.section(isMobileOrSlow)}
           className="
             relative w-full
             aspect-[4/3] sm:aspect-[16/9] md:aspect-[16/9] xl:aspect-auto xl:h-full
@@ -201,10 +193,13 @@ const HeroSection = () => {
             min-h-[300px] sm:min-h-[400px] md:min-h-[500px]
           "
         >
-          <SplineComponent
-            className="!absolute !inset-0"
-              scene="https://prod.spline.design/tF28HXnwN4ohvRC9/scene.splinecode" 
-          />
+          {disableSpline ? null : (
+            <SplineComponent
+              className="!absolute !inset-0"
+              scene="https://prod.spline.design/tF28HXnwN4ohvRC9/scene.splinecode"
+              disableSpline={disableSpline}
+            />
+          )}
         </motion.div>
       </div>
     </section>

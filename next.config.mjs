@@ -1,3 +1,10 @@
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// Polyfill __filename for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const nextConfig = {
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -13,12 +20,12 @@ const nextConfig = {
   // Experimental features to help with build stability
   experimental: {
     optimizePackageImports: ['framer-motion', '@splinetool/runtime'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  },
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },

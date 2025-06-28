@@ -1,20 +1,31 @@
 "use client"
-import { useState, useEffect } from "react"
-import Swal from "sweetalert2"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { MapPin, Phone, Mail, Instagram, Github, Linkedin, Send } from 'lucide-react'
+import { useState, useEffect } from "react";
+import { useIsMobileOrSlow } from "../hooks/useIsMobileOrSlow";
+import { motion } from "framer-motion";
+import Swal from "sweetalert2";
+import Link from "next/link";
+import { MapPin, Phone, Mail, Instagram, Github, Linkedin, Send } from 'lucide-react';
 import emailjs from "@emailjs/browser";
 import { ContactSkeleton } from "./Skeleton";
 import { useLoading } from "../contexts/LoadingContext";
 
-const inputActiveClass = "bg-[#240046]/40 border-[#9D4EDD] ring-2 ring-[#9D4EDD]"
+const ANIMATION_CONFIG = {
+  section: (isMobile) => ({
+    initial: { opacity: 0, y: isMobile ? 0 : 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: isMobile ? 0.3 : 0.7, ease: "easeOut" },
+  }),
+};
+
+const inputActiveClass = "bg-[#240046]/40 border-[#9D4EDD] ring-2 ring-[#9D4EDD]";
+
 const ContactForm = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { isComponentLoading } = useLoading();
   const isLoading = isComponentLoading('contact');
+  const [isMobileOrSlow, hasCheckedDevice] = useIsMobileOrSlow();
 
-  if (isLoading) {
+  if (isLoading || !hasCheckedDevice) {
     return <ContactSkeleton />;
   }
   function handleInput(e) {
@@ -94,16 +105,12 @@ const ContactForm = () => {
     hover: { scale: 1.2, rotate: 5, color: "#9D4EDD" },
   }
   return (
-    <div className="flex items-center justify-center w-full min-h-screen px-4 py-4 mx-auto sm:px-6 lg:px-8">
+    <div className="flex items-center justify-center w-full min-h-screen px-4 py-4 mx-auto sm:px-6 lg:px-8" aria-label="Contact">
       <div className="w-full max-w-full xl:max-w-[1400px] 2xl:max-w-[1600px]">
         <div className="flex flex-col items-stretch w-full gap-6 md:flex-row lg:gap-8">
-          
           <motion.div
             className="flex flex-col w-full md:w-1/2"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={containerVariants}
+            {...ANIMATION_CONFIG.section(isMobileOrSlow)}
           >
             <div className="flex-1 bg-[#18122B] rounded-2xl border-x-0 sm:border border-[#3C096C]/40 shadow-lg shadow-[#9D4EDD]/10 relative overflow-hidden">
               <div className="absolute w-40 h-40 rounded-full -top-20 -right-20 bg-purple-900/20"></div>
@@ -215,13 +222,9 @@ const ContactForm = () => {
               </div>
             </div>
           </motion.div>
-          {}
           <motion.div
             className="flex flex-col w-full md:w-1/2"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={containerVariants}
+            {...ANIMATION_CONFIG.section(isMobileOrSlow)}
           >
             <div className="flex-1 bg-gradient-to-br from-[#9D4EDD]/80 via-[#7B2CBF]/80 to-[#3C096C]/90 rounded-2xl border-x-0 sm:border border-[#9D4EDD]/30 shadow-lg shadow-[#9D4EDD]/10 relative overflow-hidden">
               <div className="absolute w-40 h-40 rounded-full -top-20 -left-20 bg-purple-900/20"></div>

@@ -2,21 +2,21 @@ import { CodeBracketIcon, EyeIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { memo, useState, useEffect, useRef } from "react";
 
-const ProjectCard = memo(({ imgUrl, title, description, gitUrl, previewUrl, index = 0 }) => {
+const ProjectCard = memo(({ imgUrl, title, description, gitUrl, previewUrl, index = 0, isMobileOrSlow = false }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    const observer = new window.IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setTimeout(() => {
             setIsVisible(true);
-          }, index * 200);
+          }, isMobileOrSlow ? 0 : index * 200);
         }
       },
-      { threshold: 0.1 } // Lower threshold for mobile
+      { threshold: isMobileOrSlow ? 0.01 : 0.1 }
     );
 
     if (cardRef.current) {
@@ -28,7 +28,7 @@ const ProjectCard = memo(({ imgUrl, title, description, gitUrl, previewUrl, inde
         observer.unobserve(cardRef.current);
       }
     };
-  }, [index]);
+  }, [index, isMobileOrSlow]);
 
   return (
     <div 
@@ -38,6 +38,8 @@ const ProjectCard = memo(({ imgUrl, title, description, gitUrl, previewUrl, inde
           ? 'opacity-100 translate-y-0' 
           : 'opacity-0 translate-y-8'
       }`}
+      style={isMobileOrSlow ? { transition: 'opacity 0.3s, transform 0.3s' } : {}}
+      aria-label={title}
     >
       {/* Card Container with 3D Flip */}
       <div 
@@ -45,6 +47,11 @@ const ProjectCard = memo(({ imgUrl, title, description, gitUrl, previewUrl, inde
           isFlipped ? 'rotate-y-180' : ''
         }`}
         onClick={() => setIsFlipped(!isFlipped)}
+        style={isMobileOrSlow ? { transition: 'transform 0.3s' } : {}}
+        tabIndex={0}
+        aria-pressed={isFlipped}
+        role="button"
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setIsFlipped(!isFlipped); }}
       >
         {/* Front Face */}
         <div className="absolute inset-0 w-full h-full backface-hidden rounded-2xl">
@@ -75,7 +82,8 @@ const ProjectCard = memo(({ imgUrl, title, description, gitUrl, previewUrl, inde
                   <div 
                     className="relative w-full h-full overflow-hidden bg-center bg-cover rounded-full"
                     style={{
-                      backgroundImage: `url(${imgUrl})`
+                      backgroundImage: `url(${imgUrl})`,
+                      filter: isMobileOrSlow ? 'brightness(1.05) contrast(1.02)' : undefined
                     }}
                   >
                     {/* Simple image overlay */}

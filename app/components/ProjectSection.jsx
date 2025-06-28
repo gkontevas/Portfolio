@@ -93,7 +93,6 @@ const ProjectSection = () => {
           ⚡
         </span>
       </motion.h2>
-      {/* Desktop Marquee */}
       <div className="hidden w-full py-20 sm:block"  >
         <div className="py-12 overflow-visible">
           <Marquee
